@@ -1,0 +1,46 @@
+{
+  "planet_killers": [
+    {
+      "spkid": 20001566,
+      "name": "  1566 Icarus (1949 MA)"
+    },
+    {
+      "spkid": 20001620,
+      "name": "  1620 Geographos (1951 RA)"
+    },
+    {
+      "spkid": 20001685,
+      "name": "  1685 Toro (1948 OA)"
+    },
+    {
+      "spkid": 20001862,
+      "name": "  1862 Apollo (1932 HA)"
+    },
+    {
+      "spkid": 20001863,
+      "name": "  1863 Antinous (1948 EA)"
+    }
+  ],
+  "city_killers": [
+    {
+      "spkid": 20002101,
+      "name": "  2101 Adonis (1936 CA)"
+    },
+    {
+      "spkid": 20002135,
+      "name": "  2135 Aristaeus (1977 HA)"
+    },
+    {
+      "spkid": 20003361,
+      "name": "  3361 Orpheus (1982 HR)"
+    },
+    {
+      "spkid": 20003757,
+      "name": "  3757 Anagolay (1982 XB)"
+    },
+    {
+      "spkid": 20004034,
+      "name": "  4034 Vishnu (1986 PA)"
+    }
+  ]
+}

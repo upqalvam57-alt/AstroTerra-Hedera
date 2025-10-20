@@ -1,0 +1,392 @@
+/* Base styles for a full-screen Cesium experience */
+html, body, #cesiumContainer {
+  width: 100%; 
+  height: 100%; 
+  margin: 0; 
+  padding: 0; 
+  overflow: hidden;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #000;
+}
+
+/* Styling for the main control panel in the top-left */
+#controls {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  z-index: 10;
+  background-color: rgba(30, 30, 30, 0.9);
+  padding: 15px;
+  border-radius: 10px;
+  border: 1px solid #555;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  min-width: 250px; /* Give the panel a minimum width */
+}
+
+/* Styling for all buttons in the control panel */
+#controls button, .cesium-button {
+  padding: 10px 15px;
+  border-radius: 5px;
+  border: 1px solid #666;
+  background-color: #444;
+  color: #fff;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+  transition: background-color 0.2s ease-in-out, transform 0.1s ease;
+  width: 100%; /* Make all buttons full-width */
+}
+
+#controls button:hover, .cesium-button:hover {
+    background-color: #007bff; /* A nice blue hover effect */
+    border-color: #0056b3;
+    transform: translateY(-1px);
+}
+
+#controls button:disabled, .cesium-button:disabled {
+    background-color: #222;
+    color: #777;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* Styling for the main action button group */
+#main-actions button {
+  margin-bottom: 10px; /* Add spacing between the main buttons */
+}
+#main-actions button:last-child {
+  margin-bottom: 0; /* Remove margin from the last button */
+}
+
+/* Styling for the dropdown/select list inside the sandbox panel */
+.control-panel select {
+  width: 100%;
+  padding: 8px 10px;
+  margin-bottom: 12px;
+  background-color: #222;
+  border: 1px solid #555;
+  border-radius: 5px;
+  color: #eee;
+  font-size: 14px;
+}
+
+.control-panel select:focus {
+  outline: none;
+  border-color: #007bff;
+}
+
+/* Styling for the sandbox instruction text */
+#sandbox-instructions {
+  color: #ccc;
+  font-size: 14px;
+  margin-top: 0;
+  text-align: center;
+}
+
+/* Horizontal rule for separation */
+#controls hr, .control-panel hr {
+  border: none;
+  border-top: 1px solid #555;
+  margin: 15px 0;
+}
+
+/* --- Asteroid Dashboard Styles --- */
+#asteroid-dashboard {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  z-index: 10;
+  background-color: rgba(30, 30, 30, 0.9);
+  padding: 15px;
+  border-radius: 10px;
+  border: 1px solid #555;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  width: 280px;
+  color: #eee;
+  max-height: calc(100vh - 40px);
+  overflow-y: auto;
+}
+
+#asteroid-dashboard h4 {
+  color: white;
+  margin: 0 0 15px 0;
+  text-align: center;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+#asteroid-dashboard .close-btn {
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  background: none;
+  border: none;
+  color: #aaa;
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+  transition: color 0.2s ease;
+}
+#asteroid-dashboard .close-btn:hover {
+  color: #fff;
+}
+
+#asteroid-dashboard input[type="search"],
+#asteroid-dashboard select {
+  width: 100%;
+  padding: 8px 10px;
+  margin-bottom: 15px;
+  background-color: #222;
+  border: 1px solid #555;
+  border-radius: 5px;
+  color: #eee;
+  font-size: 14px;
+  box-sizing: border-box; /* Ensures padding doesn't affect width */
+}
+
+#asteroid-dashboard input[type="search"]:focus,
+#asteroid-dashboard select:focus {
+  outline: none;
+  border-color: #007bff;
+}
+
+#asteroid-dashboard .filter-group {
+  margin-bottom: 15px;
+}
+#asteroid-dashboard .filter-group:last-child {
+  margin-bottom: 5px; /* Reduce bottom margin for the last group */
+}
+
+#asteroid-dashboard .filter-group > label { /* Direct child label */
+  display: block;
+  font-weight: bold;
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+#asteroid-dashboard .filter-group div {
+  display: flex;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+#asteroid-dashboard .filter-group input[type="checkbox"] {
+  margin-right: 10px;
+  width: 15px;
+  height: 15px;
+}
+
+/* Style for checkbox labels for better alignment and interaction */
+#asteroid-dashboard .filter-group div label {
+  font-weight: normal;
+  font-size: 14px;
+  cursor: pointer;
+}
+/* --- Mission Selection Panel Styles --- */
+#mission-selection-panel {
+  top: 130px; 
+  width: 300px; 
+}
+
+#mission-selection-panel button {
+  width: 100%; 
+  margin-bottom: 10px; 
+  box-sizing: border-box; 
+}
+
+#mission-selection-panel button:last-child {
+  margin-bottom: 0;
+}
+
+.consequence-text {
+  font-size: 12px;
+  font-style: italic;
+  color: #aaa;
+  margin-top: -5px; 
+  margin-bottom: 15px;
+  padding-left: 10px;
+  border-left: 2px solid #007bff; 
+}
+
+/* --- Impact Timer Styles --- */
+/* FIND AND REPLACE THIS RULE */
+/* Find this rule in your style.css and replace it entirely */
+#impact-timer-container {
+    position: absolute;
+    top: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: fit-content;
+    z-index: 100;
+    background-color: rgba(0, 0, 0, 0.6);
+    border: 2px solid #ff4500;
+    border-radius: 10px;
+    padding: 10px 30px;
+    text-align: center;
+    color: white;
+    text-shadow: 0 0 8px #ff4500;
+    font-family: 'Courier New', Courier, monospace;
+    cursor: move;
+}
+
+
+.cesium-animation-playPauseButton {
+    display: none !important;
+}
+
+/* --- Draggable Panel Styles --- */
+.draggable-panel {
+    min-width: 320px;
+    width: 320px;
+    padding: 0; 
+}
+
+.panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #4f545c;
+    padding: 8px 12px;
+    cursor: move;
+    border-top-left-radius: 9px;
+    border-top-right-radius: 9px;
+    border-bottom: 1px solid #555;
+}
+
+.panel-title {
+    margin: 0;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.minimize-btn {
+    background: none;
+    border: 1px solid #777;
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+    width: 24px !important; 
+    height: 24px;
+    padding: 0 !important;
+    line-height: 20px;
+    font-size: 18px;
+}
+.minimize-btn:hover {
+    background-color: #555 !important;
+    transform: none !important;
+}
+
+.panel-content {
+    padding: 15px; 
+    max-height: 70vh; 
+    overflow-y: auto; 
+}
+
+.panel-content.minimized {
+    display: none;
+}
+#phase1-mission-controls .panel-content p {
+    color: #fffac9;
+}
+
+/* --- Phase 2: Mitigation Hub Styles --- */
+/* FIND AND REPLACE THIS ENTIRE BLOCK */
+.status-display {
+    display: flex;
+    justify-content: space-between; /* Pushes children to opposite ends */
+    align-items: center; /* Vertically aligns them */
+    font-size: 14px;
+    color: #eee;
+    margin-bottom: 8px;
+    font-family: 'Courier New', Courier, monospace;
+}
+.status-display span:first-child {
+    font-weight: bold;
+    color: #ccc;
+    /* This ensures the label doesn't wrap unnecessarily */
+    white-space: nowrap; 
+    padding-right: 10px; /* Adds some space between label and value */
+}
+.status-display span:last-child {
+    font-weight: bold;
+    color: #4CAF50; 
+}
+/* --- END OF REPLACEMENT BLOCK --- */
+#status-reliability {
+    /* Color will be set by JS */
+    font-weight: bold;
+}
+
+.design-step {
+    margin-bottom: 15px;
+}
+.design-step > label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 8px;
+    font-size: 15px;
+    color: white;
+}
+.spec-text {
+    font-size: 12px;
+    font-style: italic;
+    color: #aaa;
+    margin-top: -5px;
+    margin-bottom: 5px;
+}
+.slider-container {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Space between label and slider */
+}
+.slider-container label {
+    font-size: 14px;
+    color: #ccc;
+    white-space: nowrap; /* Prevent label from wrapping */
+}
+.slider {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 8px;
+  border-radius: 5px;
+  background: #555;
+  outline: none;
+}
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #007bff;
+  cursor: pointer;
+}
+#porkchop-plot-options {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.porkchop-btn {
+    padding: 8px;
+    text-align: left;
+    font-size: 13px;
+    line-height: 1.4;
+    border: 2px solid transparent; /* For selection highlight */
+}
+.porkchop-btn.selected {
+    border-color: #007bff;
+    background-color: #333;
+}
+.porkchop-btn small {
+    font-weight: normal;
+    color: #ccc;
+}
+/* Add this to your existing CSS file */
+.porkchop-btn.selected {
+  background-color: #6a6a6a; /* A slightly lighter grey */
+  border: 2px solid #ffffff; /* A solid white border */
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.5); /* A subtle glow */
+}

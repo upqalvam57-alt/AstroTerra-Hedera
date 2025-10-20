@@ -1,0 +1,2502 @@
+[
+  {
+    "spkid": 20001566,
+    "name": "  1566 Icarus (1949 MA)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20001620,
+    "name": "  1620 Geographos (1951 RA)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20001685,
+    "name": "  1685 Toro (1948 OA)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20001862,
+    "name": "  1862 Apollo (1932 HA)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20001863,
+    "name": "  1863 Antinous (1948 EA)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20001864,
+    "name": "  1864 Daedalus (1971 FA)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20001865,
+    "name": "  1865 Cerberus (1971 UA)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20001866,
+    "name": "  1866 Sisyphus (1972 XA)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20001981,
+    "name": "  1981 Midas (1973 EA)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20002063,
+    "name": "  2063 Bacchus (1977 HB)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20002101,
+    "name": "  2101 Adonis (1936 CA)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20002102,
+    "name": "  2102 Tantalus (1975 YA)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20002135,
+    "name": "  2135 Aristaeus (1977 HA)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20002201,
+    "name": "  2201 Oljato (1947 XC)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20002212,
+    "name": "  2212 Hephaistos (1978 SB)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20002329,
+    "name": "  2329 Orthos (1976 WA)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20003103,
+    "name": "  3103 Eger (1982 BB)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20003200,
+    "name": "  3200 Phaethon (1983 TB)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20003360,
+    "name": "  3360 Syrinx (1981 VA)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20003361,
+    "name": "  3361 Orpheus (1982 HR)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20003671,
+    "name": "  3671 Dionysus (1984 KD)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20003752,
+    "name": "  3752 Camillo (1985 PA)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20003757,
+    "name": "  3757 Anagolay (1982 XB)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20003838,
+    "name": "  3838 Epona (1986 WA)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20004015,
+    "name": "  4015 Wilson-Harrington (1979 VA)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20004034,
+    "name": "  4034 Vishnu (1986 PA)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20004179,
+    "name": "  4179 Toutatis (1989 AC)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20004183,
+    "name": "  4183 Cuno (1959 LM)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20004197,
+    "name": "  4197 Morpheus (1982 TA)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20004257,
+    "name": "  4257 Ubasti (1987 QA)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20004341,
+    "name": "  4341 Poseidon (1987 KF)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20004450,
+    "name": "  4450 Pan (1987 SY)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20004486,
+    "name": "  4486 Mithra (1987 SB)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20004544,
+    "name": "  4544 Xanthus (1989 FB)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20004581,
+    "name": "  4581 Asclepius (1989 FC)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20004660,
+    "name": "  4660 Nereus (1982 DB)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20004769,
+    "name": "  4769 Castalia (1989 PB)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20004953,
+    "name": "  4953 (1990 MU)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20005011,
+    "name": "  5011 Ptah (6743 P-L)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20005131,
+    "name": "  5131 (1990 BG)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20005143,
+    "name": "  5143 Heracles (1991 VL)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20005189,
+    "name": "  5189 (1990 UQ)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20005496,
+    "name": "  5496 (1973 NA)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20005645,
+    "name": "  5645 (1990 SP)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20005660,
+    "name": "  5660 (1974 MA)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20005693,
+    "name": "  5693 (1993 EA)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20005731,
+    "name": "  5731 Zeus (1988 VP4)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20005786,
+    "name": "  5786 Talos (1991 RC)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20005828,
+    "name": "  5828 (1991 AM)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20006037,
+    "name": "  6037 (1988 EG)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20006047,
+    "name": "  6047 (1991 TB1)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20006053,
+    "name": "  6053 (1993 BW3)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20006063,
+    "name": "  6063 Jason (1984 KB)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20006239,
+    "name": "  6239 Minos (1989 QF)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20006455,
+    "name": "  6455 (1992 HE)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20006489,
+    "name": "  6489 Golevka (1991 JX)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20006611,
+    "name": "  6611 (1993 VW)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20007025,
+    "name": "  7025 (1993 QA)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20007092,
+    "name": "  7092 Cadmus (1992 LC)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20007335,
+    "name": "  7335 (1989 JA)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20007341,
+    "name": "  7341 (1991 VK)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20007350,
+    "name": "  7350 (1993 VA)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20007482,
+    "name": "  7482 (1994 PC1)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20007753,
+    "name": "  7753 (1988 XB)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20007822,
+    "name": "  7822 (1991 CS)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20007888,
+    "name": "  7888 (1993 UC)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20007889,
+    "name": "  7889 (1994 LX)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20008014,
+    "name": "  8014 (1990 MF)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20008035,
+    "name": "  8035 (1992 TB)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20008176,
+    "name": "  8176 (1991 WA)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20008201,
+    "name": "  8201 (1994 AH2)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20008507,
+    "name": "  8507 (1991 CB1)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20008566,
+    "name": "  8566 (1996 EN)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20009058,
+    "name": "  9058 (1992 JB)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20009162,
+    "name": "  9162 Kwiila (1987 OA)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20009202,
+    "name": "  9202 (1993 PB)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20009856,
+    "name": "  9856 (1991 EE)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20010115,
+    "name": " 10115 (1992 SK)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20010145,
+    "name": " 10145 (1994 CK1)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20010165,
+    "name": " 10165 (1995 BL2)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20010563,
+    "name": " 10563 Izhdubar (1993 WD)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20010636,
+    "name": " 10636 (1998 QK56)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20011066,
+    "name": " 11066 Sigurd (1992 CC1)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20011311,
+    "name": " 11311 Peleus (1993 XN2)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20011405,
+    "name": " 11405 (1999 CV3)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20011500,
+    "name": " 11500 Tomaiyowit (1989 UR)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20011885,
+    "name": " 11885 Summanus (1990 SS)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20012538,
+    "name": " 12538 (1998 OH)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20012711,
+    "name": " 12711 Tukmit (1991 BB)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20012923,
+    "name": " 12923 Zephyr (1999 GK4)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20013651,
+    "name": " 13651 (1997 BR)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20014827,
+    "name": " 14827 Hypnos (1986 JK)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20016816,
+    "name": " 16816 (1997 UF9)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20016834,
+    "name": " 16834 (1997 WU22)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20016960,
+    "name": " 16960 (1998 QS52)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20017181,
+    "name": " 17181 (1999 UM3)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20017182,
+    "name": " 17182 (1999 VU)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20017188,
+    "name": " 17188 (1999 WC2)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20017511,
+    "name": " 17511 (1992 QN)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20020236,
+    "name": " 20236 (1998 BZ7)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20020425,
+    "name": " 20425 (1998 VD35)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20020429,
+    "name": " 20429 (1998 YN1)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20020826,
+    "name": " 20826 (2000 UV13)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20022099,
+    "name": " 22099 (2000 EX106)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20022753,
+    "name": " 22753 (1998 WT)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20022771,
+    "name": " 22771 (1999 CU3)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20023187,
+    "name": " 23187 (2000 PN9)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20024443,
+    "name": " 24443 (2000 OG)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20024445,
+    "name": " 24445 (2000 PM8)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20024761,
+    "name": " 24761 Ahau (1993 BW2)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20025143,
+    "name": " 25143 Itokawa (1998 SF36)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20025330,
+    "name": " 25330 (1999 KV4)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20026379,
+    "name": " 26379 (1999 HZ1)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20026663,
+    "name": " 26663 (2000 XK47)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20027002,
+    "name": " 27002 (1998 DV9)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20029075,
+    "name": " 29075 (1950 DA)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20030825,
+    "name": " 30825 (1990 TG1)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20030997,
+    "name": " 30997 (1995 UO5)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20031662,
+    "name": " 31662 (1999 HP11)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20031669,
+    "name": " 31669 (1999 JT6)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20035107,
+    "name": " 35107 (1991 VH)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20035396,
+    "name": " 35396 (1997 XF11)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20035670,
+    "name": " 35670 (1998 SU27)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20036236,
+    "name": " 36236 (1999 VV)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20036284,
+    "name": " 36284 (2000 DM8)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20037638,
+    "name": " 37638 (1993 VB)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20037655,
+    "name": " 37655 Illapa (1994 PM)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20038086,
+    "name": " 38086 Beowulf (1999 JB)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20038239,
+    "name": " 38239 (1999 OR3)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20040267,
+    "name": " 40267 (1999 GJ4)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20041429,
+    "name": " 41429 (2000 GE2)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20042286,
+    "name": " 42286 (2001 TN41)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20052340,
+    "name": " 52340 (1992 SY)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20052750,
+    "name": " 52750 (1998 KK17)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20052760,
+    "name": " 52760 (1998 ML14)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20052762,
+    "name": " 52762 (1998 MT24)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20052768,
+    "name": " 52768 (1998 OR2)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20053319,
+    "name": " 53319 (1999 JM8)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20053409,
+    "name": " 53409 (1999 LU7)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20053426,
+    "name": " 53426 (1999 SL5)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20053429,
+    "name": " 53429 (1999 TF5)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20053550,
+    "name": " 53550 (2000 BF19)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20053789,
+    "name": " 53789 (2000 ED104)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20054509,
+    "name": " 54509 YORP (2000 PH5)",
+    "classification": "REGULAR"
+  },
+  {
+    "spkid": 20055408,
+    "name": " 55408 (2001 TC2)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20055532,
+    "name": " 55532 (2001 WG2)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20065690,
+    "name": " 65690 (1991 DG)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20065717,
+    "name": " 65717 (1993 BX3)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20065733,
+    "name": " 65733 (1993 PC)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20065803,
+    "name": " 65803 Didymos (1996 GT)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20065909,
+    "name": " 65909 (1998 FH12)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20066008,
+    "name": " 66008 (1998 QH2)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20066253,
+    "name": " 66253 (1999 GT3)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20067381,
+    "name": " 67381 (2000 OL8)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20067399,
+    "name": " 67399 (2000 PJ6)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20068216,
+    "name": " 68216 (2001 CV26)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20068267,
+    "name": " 68267 (2001 EA16)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20068346,
+    "name": " 68346 (2001 KZ66)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20068348,
+    "name": " 68348 (2001 LO7)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20068372,
+    "name": " 68372 (2001 PM9)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20068548,
+    "name": " 68548 (2001 XR31)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20068950,
+    "name": " 68950 (2002 QF15)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20069230,
+    "name": " 69230 Hermes (1937 UB)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20085182,
+    "name": " 85182 (1991 AQ)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20085236,
+    "name": " 85236 (1993 KH)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20085585,
+    "name": " 85585 Mjolnir (1998 FG2)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20085640,
+    "name": " 85640 (1998 OX4)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20085713,
+    "name": " 85713 (1998 SS49)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20085774,
+    "name": " 85774 (1998 UT18)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20085818,
+    "name": " 85818 (1998 XM4)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20085938,
+    "name": " 85938 (1999 DJ4)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20085990,
+    "name": " 85990 (1999 JV6)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20086039,
+    "name": " 86039 (1999 NC43)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20086666,
+    "name": " 86666 (2000 FL10)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20086819,
+    "name": " 86819 (2000 GK137)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20086829,
+    "name": " 86829 (2000 GR146)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20086878,
+    "name": " 86878 (2000 HD24)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20087024,
+    "name": " 87024 (2000 JS66)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20087025,
+    "name": " 87025 (2000 JT66)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20087311,
+    "name": " 87311 (2000 QJ1)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20088254,
+    "name": " 88254 (2001 FM129)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20088710,
+    "name": " 88710 (2001 SL9)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20088959,
+    "name": " 88959 (2001 TZ44)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20089136,
+    "name": " 89136 (2001 US16)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20089958,
+    "name": " 89958 (2002 LY45)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20089959,
+    "name": " 89959 (2002 NT7)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20090075,
+    "name": " 90075 (2002 VU94)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20090147,
+    "name": " 90147 (2002 YK14)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20090367,
+    "name": " 90367 (2003 LC5)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20090403,
+    "name": " 90403 (2003 YE45)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20090416,
+    "name": " 90416 (2003 YK118)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20096315,
+    "name": " 96315 (1997 AP10)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20096536,
+    "name": " 96536 (1998 SO10)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20096744,
+    "name": " 96744 (1999 OW3)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20098943,
+    "name": " 98943 Torifune (2001 CC21)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20099248,
+    "name": " 99248 (2001 KY66)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20099935,
+    "name": " 99935 (2002 AV4)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20100004,
+    "name": "100004 (1983 VA)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20100085,
+    "name": "100085 (1992 UY4)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20100756,
+    "name": "100756 (1998 FM5)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20101869,
+    "name": "101869 (1999 MM)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20101955,
+    "name": "101955 Bennu (1999 RQ36)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20103067,
+    "name": "103067 (1999 XA143)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20106538,
+    "name": "106538 (2000 WK63)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20106589,
+    "name": "106589 (2000 WN107)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20108906,
+    "name": "108906 (2001 PL9)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20111253,
+    "name": "111253 (2001 XU10)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20136617,
+    "name": "136617 (1994 CC)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20136618,
+    "name": "136618 (1994 CN2)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20136770,
+    "name": "136770 (1996 PC1)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20136793,
+    "name": "136793 (1997 AQ18)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20136795,
+    "name": "136795 Tatsunokingo (1997 BQ)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20136849,
+    "name": "136849 (1998 CS1)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20136874,
+    "name": "136874 (1998 FH74)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20136900,
+    "name": "136900 (1998 HL49)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20136993,
+    "name": "136993 (1998 ST49)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20137032,
+    "name": "137032 (1998 UO1)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20137052,
+    "name": "137052 Tjelvar (1998 VO33)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20137062,
+    "name": "137062 (1998 WM)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20137078,
+    "name": "137078 (1998 XZ4)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20137084,
+    "name": "137084 (1998 XS16)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20137099,
+    "name": "137099 (1998 YW3)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20137108,
+    "name": "137108 (1999 AN10)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20137120,
+    "name": "137120 (1999 BJ8)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20137126,
+    "name": "137126 (1999 CF9)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20137158,
+    "name": "137158 (1999 FB)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20137175,
+    "name": "137175 (1999 JA11)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20137427,
+    "name": "137427 (1999 TF211)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20137925,
+    "name": "137925 (2000 BJ19)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20138013,
+    "name": "138013 (2000 CN101)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20138175,
+    "name": "138175 (2000 EE104)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20138205,
+    "name": "138205 (2000 EZ148)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20138325,
+    "name": "138325 (2000 GO82)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20138359,
+    "name": "138359 (2000 GX127)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20138404,
+    "name": "138404 (2000 HA24)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20138727,
+    "name": "138727 (2000 SU180)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20138846,
+    "name": "138846 (2000 VJ61)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20138852,
+    "name": "138852 (2000 WN10)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20138859,
+    "name": "138859 (2000 WN63)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20138877,
+    "name": "138877 (2000 XG47)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20138883,
+    "name": "138883 (2000 YL29)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20138893,
+    "name": "138893 (2000 YH66)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20138937,
+    "name": "138937 (2001 BK16)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20138947,
+    "name": "138947 (2001 BA40)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20138971,
+    "name": "138971 (2001 CB21)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20139289,
+    "name": "139289 (2001 KR1)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20139345,
+    "name": "139345 (2001 KA67)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20139359,
+    "name": "139359 (2001 ME1)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20139622,
+    "name": "139622 (2001 QQ142)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20140039,
+    "name": "140039 (2001 SO73)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20140158,
+    "name": "140158 (2001 SX169)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20140288,
+    "name": "140288 (2001 SN289)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20141052,
+    "name": "141052 (2001 XR1)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20141053,
+    "name": "141053 (2001 XT1)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20141056,
+    "name": "141056 (2001 XV4)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20141079,
+    "name": "141079 (2001 XS30)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20141495,
+    "name": "141495 (2002 EZ11)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20141525,
+    "name": "141525 (2002 FV5)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20141526,
+    "name": "141526 (2002 FA6)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20141527,
+    "name": "141527 (2002 FG7)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20141593,
+    "name": "141593 (2002 HK12)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20141614,
+    "name": "141614 (2002 JV15)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20141851,
+    "name": "141851 (2002 PM6)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20143404,
+    "name": "143404 (2003 BD44)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20143487,
+    "name": "143487 (2003 CR20)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20143624,
+    "name": "143624 (2003 HM16)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20143637,
+    "name": "143637 (2003 LP6)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20143649,
+    "name": "143649 (2003 QQ47)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20143651,
+    "name": "143651 (2003 QO104)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20143947,
+    "name": "143947 (2003 YQ117)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20143992,
+    "name": "143992 (2004 AF)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20144332,
+    "name": "144332 (2004 DV24)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20144411,
+    "name": "144411 (2004 EW9)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20144861,
+    "name": "144861 (2004 LA12)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20144898,
+    "name": "144898 (2004 VD17)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20144901,
+    "name": "144901 (2004 WG1)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20152560,
+    "name": "152560 (1991 BN)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20152561,
+    "name": "152561 (1991 RB)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20152564,
+    "name": "152564 (1992 HF)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20152664,
+    "name": "152664 (1998 FW4)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20152667,
+    "name": "152667 (1998 FR11)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20152671,
+    "name": "152671 (1998 HL3)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20152679,
+    "name": "152679 (1998 KU2)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20152680,
+    "name": "152680 (1998 KJ9)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20152685,
+    "name": "152685 (1998 MZ)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20152754,
+    "name": "152754 (1999 GS6)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20152756,
+    "name": "152756 (1999 JV3)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20152770,
+    "name": "152770 (1999 RR28)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20152828,
+    "name": "152828 (1999 VT25)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20152889,
+    "name": "152889 (2000 CF59)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20152941,
+    "name": "152941 (2000 FM10)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20152964,
+    "name": "152964 (2000 GP82)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20152978,
+    "name": "152978 (2000 GJ147)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20153002,
+    "name": "153002 (2000 JG5)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20153195,
+    "name": "153195 (2000 WB1)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20153220,
+    "name": "153220 (2000 YN29)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20153243,
+    "name": "153243 (2001 AU47)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20153249,
+    "name": "153249 (2001 BW15)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20153267,
+    "name": "153267 (2001 CB32)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20153271,
+    "name": "153271 (2001 CL42)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20153311,
+    "name": "153311 (2001 MG1)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20153315,
+    "name": "153315 (2001 NH6)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20153349,
+    "name": "153349 (2001 PJ9)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20153460,
+    "name": "153460 (2001 RN)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20153792,
+    "name": "153792 (2001 VH75)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20153814,
+    "name": "153814 (2001 WN5)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20153953,
+    "name": "153953 (2002 AD9)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20153957,
+    "name": "153957 (2002 AB29)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20153958,
+    "name": "153958 (2002 AM31)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20154019,
+    "name": "154019 (2002 CZ9)",
+    "classification": "PHA"
+  },
+  {
+    "spkid": 20154020,
+    "name": "154020 (2002 CA10)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20154029,
+    "name": "154029 (2002 CY46)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20154035,
+    "name": "154035 (2002 CV59)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20154229,
+    "name": "154229 (2002 JN97)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20154268,
+    "name": "154268 (2002 RM129)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20154269,
+    "name": "154269 (2002 SM)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20154275,
+    "name": "154275 (2002 SR41)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20154276,
+    "name": "154276 (2002 SY50)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20154278,
+    "name": "154278 (2002 TB9)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20154300,
+    "name": "154300 (2002 UO)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20154302,
+    "name": "154302 (2002 UQ3)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20154330,
+    "name": "154330 (2002 VX94)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20154347,
+    "name": "154347 (2002 XK4)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20154453,
+    "name": "154453 (2003 CJ11)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20154555,
+    "name": "154555 (2003 HA)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20154590,
+    "name": "154590 (2003 MA3)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20154631,
+    "name": "154631 (2003 WO25)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20154652,
+    "name": "154652 (2004 EP20)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20154656,
+    "name": "154656 (2004 FE3)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20154658,
+    "name": "154658 (2004 FA18)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20154715,
+    "name": "154715 (2004 LB6)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20154807,
+    "name": "154807 (2004 PP97)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20154988,
+    "name": "154988 (2004 XN35)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20154993,
+    "name": "154993 (2005 EA94)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20155110,
+    "name": "155110 (2005 TB)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20155140,
+    "name": "155140 (2005 UD)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20155336,
+    "name": "155336 (2006 GA1)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20155338,
+    "name": "155338 (2006 MZ1)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20159459,
+    "name": "159459 (2000 KB)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20159504,
+    "name": "159504 (2000 WO67)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20159677,
+    "name": "159677 (2002 HQ11)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20159686,
+    "name": "159686 (2002 LB6)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20159699,
+    "name": "159699 (2002 PQ142)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20159857,
+    "name": "159857 (2004 LJ1)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20159928,
+    "name": "159928 (2005 CV69)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20161989,
+    "name": "161989 Cacus (1978 CA)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20162000,
+    "name": "162000 (1990 OS)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20162039,
+    "name": "162039 (1996 JG)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20162063,
+    "name": "162063 (1997 EH29)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20162082,
+    "name": "162082 (1998 HL1)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20162116,
+    "name": "162116 (1998 SA15)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20162120,
+    "name": "162120 (1998 SH36)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20162157,
+    "name": "162157 (1999 CV8)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20162162,
+    "name": "162162 (1999 DB7)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20162173,
+    "name": "162173 Ryugu (1999 JU3)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20162181,
+    "name": "162181 (1999 LF6)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20162183,
+    "name": "162183 (1999 NB5)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20162195,
+    "name": "162195 (1999 RK45)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20162210,
+    "name": "162210 (1999 SM5)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20162214,
+    "name": "162214 (1999 TC10)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20162215,
+    "name": "162215 (1999 TL12)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20162269,
+    "name": "162269 (1999 VO6)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20162416,
+    "name": "162416 (2000 EH26)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20162422,
+    "name": "162422 (2000 EV70)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20162433,
+    "name": "162433 (2000 FK10)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20162463,
+    "name": "162463 (2000 JH5)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20162470,
+    "name": "162470 (2000 KX43)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20162474,
+    "name": "162474 (2000 LB16)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20162510,
+    "name": "162510 (2000 QW69)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20162567,
+    "name": "162567 (2000 RW37)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20162679,
+    "name": "162679 (2000 TK1)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20162687,
+    "name": "162687 (2000 UH1)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20162695,
+    "name": "162695 (2000 UL11)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20162723,
+    "name": "162723 (2000 VM2)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20162783,
+    "name": "162783 (2000 YJ11)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20162825,
+    "name": "162825 (2001 BO61)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20162882,
+    "name": "162882 (2001 FD58)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20162903,
+    "name": "162903 (2001 JV2)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20162911,
+    "name": "162911 (2001 LL5)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20162913,
+    "name": "162913 (2001 MT18)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20162922,
+    "name": "162922 (2001 OY13)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20162979,
+    "name": "162979 (2001 RA12)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20162980,
+    "name": "162980 (2001 RR17)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20162998,
+    "name": "162998 (2001 SK162)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20163014,
+    "name": "163014 (2001 UA5)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20163015,
+    "name": "163015 (2001 UX16)",
+    "classification": "REGULAR"
+  },
+  {
+    "spkid": 20163026,
+    "name": "163026 (2001 XR30)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20163051,
+    "name": "163051 (2001 YJ4)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20163067,
+    "name": "163067 (2002 AP3)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20163081,
+    "name": "163081 (2002 AG29)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20163132,
+    "name": "163132 (2002 CU11)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20163191,
+    "name": "163191 (2002 EQ9)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20163249,
+    "name": "163249 (2002 GT)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20163295,
+    "name": "163295 (2002 HW)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20163335,
+    "name": "163335 (2002 LJ)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20163364,
+    "name": "163364 (2002 OD20)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20163373,
+    "name": "163373 (2002 PZ39)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20163454,
+    "name": "163454 (2002 RN129)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20163679,
+    "name": "163679 (2002 XG84)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20163683,
+    "name": "163683 (2002 YP2)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20163692,
+    "name": "163692 (2003 CY18)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20163696,
+    "name": "163696 (2003 EB50)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20163697,
+    "name": "163697 (2003 EF54)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20163732,
+    "name": "163732 (2003 KP2)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20163758,
+    "name": "163758 (2003 OS13)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20163818,
+    "name": "163818 (2003 RX7)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20164120,
+    "name": "164120 (2003 YK)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20164121,
+    "name": "164121 (2003 YT1)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20164184,
+    "name": "164184 (2004 BF68)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20164201,
+    "name": "164201 (2004 EC)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20164206,
+    "name": "164206 (2004 FN18)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20164207,
+    "name": "164207 Cardea (2004 GU9)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20164211,
+    "name": "164211 (2004 JA27)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20164216,
+    "name": "164216 (2004 OT11)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20164222,
+    "name": "164222 (2004 RN9)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20164342,
+    "name": "164342 (2005 CP)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20164400,
+    "name": "164400 (2005 GN59)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20168318,
+    "name": "168318 (1989 DA)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20169352,
+    "name": "169352 (2001 UY16)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20170013,
+    "name": "170013 (2002 UO3)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20170086,
+    "name": "170086 (2002 XR14)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20170502,
+    "name": "170502 (2003 WM7)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20170903,
+    "name": "170903 (2004 WS2)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20171486,
+    "name": "171486 (1996 MO)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20171576,
+    "name": "171576 (1999 VP11)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20171839,
+    "name": "171839 (2001 JM1)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20172678,
+    "name": "172678 (2003 YM137)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20172722,
+    "name": "172722 (2004 BV102)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20173561,
+    "name": "173561 (2000 YV137)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20174881,
+    "name": "174881 (2004 BU58)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20175114,
+    "name": "175114 (2004 QQ)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20175706,
+    "name": "175706 (1996 FG3)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20175729,
+    "name": "175729 (1998 BB10)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20175921,
+    "name": "175921 (2000 DM1)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20177016,
+    "name": "177016 (2003 BM47)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20177049,
+    "name": "177049 (2003 EE16)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20177614,
+    "name": "177614 (2004 HK33)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20177651,
+    "name": "177651 (2004 XM14)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20179806,
+    "name": "179806 (2002 TD66)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20180186,
+    "name": "180186 (2003 QZ30)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20184266,
+    "name": "184266 (2004 VW14)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20184990,
+    "name": "184990 (2006 KE89)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20185851,
+    "name": "185851 (2000 DP107)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20186822,
+    "name": "186822 (2004 FE31)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20186823,
+    "name": "186823 (2004 FN32)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20186844,
+    "name": "186844 (2004 GA1)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20187040,
+    "name": "187040 (2005 JS108)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20189008,
+    "name": "189008 (1996 FR3)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20189040,
+    "name": "189040 (2000 MU1)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20189173,
+    "name": "189173 (2002 XY4)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20189630,
+    "name": "189630 (2001 LE6)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20189865,
+    "name": "189865 (2003 NC)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20190119,
+    "name": "190119 (2004 VA64)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20190135,
+    "name": "190135 (2005 QE30)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20190491,
+    "name": "190491 (2000 FJ10)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20190788,
+    "name": "190788 (2001 RT17)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20191094,
+    "name": "191094 (2002 EA3)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20192559,
+    "name": "192559 (1998 VO)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20192563,
+    "name": "192563 (1998 WZ6)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20192642,
+    "name": "192642 (1999 RD32)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20193178,
+    "name": "193178 (2000 PK5)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20194006,
+    "name": "194006 (2001 SG10)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20194268,
+    "name": "194268 (2001 UY4)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20194386,
+    "name": "194386 (2001 VG5)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20196068,
+    "name": "196068 (2002 TW55)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20196625,
+    "name": "196625 (2003 RM10)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20197588,
+    "name": "197588 (2004 HE12)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20199145,
+    "name": "199145 (2005 YY128)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20199801,
+    "name": "199801 (2007 AE12)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20200754,
+    "name": "200754 (2001 WA25)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20202411,
+    "name": "202411 (2005 RC)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20202435,
+    "name": "202435 (2005 XH8)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20204131,
+    "name": "204131 (2003 YL)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20204232,
+    "name": "204232 (2004 DG2)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20205744,
+    "name": "205744 (2002 BK25)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20206378,
+    "name": "206378 (2003 RB)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20206910,
+    "name": "206910 (2004 NL8)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20207398,
+    "name": "207398 (2006 AS2)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20207945,
+    "name": "207945 (1991 JW)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20208115,
+    "name": "208115 (2000 CT101)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20208565,
+    "name": "208565 (2002 CT11)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20208617,
+    "name": "208617 (2002 EB3)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20211871,
+    "name": "211871 (2004 HO)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20212359,
+    "name": "212359 (2006 EV52)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20213869,
+    "name": "213869 (2003 SG170)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20214088,
+    "name": "214088 (2004 JN13)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20214869,
+    "name": "214869 (2007 PA8)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20215188,
+    "name": "215188 (2000 NM)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20215588,
+    "name": "215588 (2003 HF2)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20216115,
+    "name": "216115 (2006 SU19)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20216258,
+    "name": "216258 (2006 WH1)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20216985,
+    "name": "216985 (2000 QK130)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20217390,
+    "name": "217390 (2005 CW25)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20217430,
+    "name": "217430 (2005 SN25)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20217628,
+    "name": "217628 Lugh (1990 HA)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20217837,
+    "name": "217837 (2001 LC)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20218017,
+    "name": "218017 (2001 XV266)",
+    "classification": "CITY_KILLER"
+  },
+  {
+    "spkid": 20218863,
+    "name": "218863 (2006 WO127)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20219021,
+    "name": "219021 (1991 LH)",
+    "classification": "PLANET_KILLER"
+  },
+  {
+    "spkid": 20219071,
+    "name": "219071 (1997 US9)",
+    "classification": "PLANET_KILLER"
+  }
+]

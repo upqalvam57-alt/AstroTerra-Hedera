@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>AstroTerra - Solar System Visualizer</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌍</text></svg>">
+    <link rel="stylesheet" href="/src/style.css">
+  </head>
+ <body>
+
+    <div id="cesiumContainer"></div>
+
+    <!-- Main Control Panel -->
+    <div id="controls">
+      <h3 style="color: white; margin: 0 0 15px 0; text-align: center;">AstroTerra</h3>
+      
+  <!-- This is the replacement for the main-actions div -->
+      <div id="main-actions">
+        <button id="sandbox-init-btn">Impact Simulation Sandbox</button>
+        <button id="mission-select-btn">Mitigation Strategy Scenarios</button>
+        <button id="simulate-orbits-btn">Simulate NEO Orbits</button> 
+        <button id="heatmap-btn">NEO Heatmap</button>
+      </div>
+  
+<!-- Mission Selection Panel (hidden by default) -->
+    <div id="mission-selection-panel" class="control-panel" style="display:none; top: 130px;">
+        <h4>Select a Scenario</h4>
+        <button id="start-planet-killer-btn">Planet Killer: Impactor 2025</button>
+        <button id="start-city-killer-btn" disabled>City Killer (Coming Soon)</button>
+    </div>
+
+<!-- Phase 1: Mission Control Panel -->
+<div id="phase1-mission-controls" class="control-panel draggable-panel" style="display:none;">
+    <div class="panel-header">
+        <h4 class="panel-title">Threat: Impactor 2025</h4>
+        <button class="minimize-btn" title="Minimize/Restore">_</button>
+    </div>
+    <div class="panel-content">
+        <!-- Section 1: Initial Briefing -->
+        <div id="phase1-briefing">
+            <p>An asteroid has been detected on an Earth-crossing orbit. Its trajectory is uncertain.</p>
+            <p>You must use our observation network to refine the orbit and confirm the impact risk.</p>
+        </div>
+
+        <!-- Section 2: Orbital Determination -->
+        <div id="phase1-observation-step" style="display:block;"> <!-- This is visible first -->
+            <hr>
+            <p><strong>Impact Probability:</strong> <span id="phase1-probability">5.0%</span></p>
+            <p><strong>Status:</strong> <span id="phase1-status-text">Awaiting orbital determination.</span></p>
+            <button id="phase1-observe-btn">Task Observation Network (1 day)</button>
+            <p class="consequence-text">Each observation costs time but will shrink the 'Cone of Uncertainty' and increase the accuracy of the impact prediction.</p>
+        </div>
+
+        <!-- Section 3: The Great Strategic Choice -->
+        <div id="phase1-decision-step" style="display:none;"> <!-- This is hidden initially -->
+            <hr>
+            <p><strong>IMPACT CONFIRMED.</strong> Countdown has begun.</p>
+            <p>You must now choose your strategy. Spend precious time to gather intelligence, or proceed immediately with incomplete data?</p>
+
+            <button id="phase1-choice-probe-btn">Launch Characterization Probe (Cost: 30 days)</button>
+            <p class="consequence-text">This probe will determine the asteroid's composition (e.g., rubble pile vs. solid rock), vital for a successful intercept. However, this is the slowest option.</p>
+
+            <button id="phase1-choice-blind-btn">Proceed to Mitigation Design (Fastest)</button>
+            <p class="consequence-text">This is the fastest approach, saving valuable time and fuel, but carries immense risk. You will be designing the mitigation mission without knowing the asteroid's physical properties.</p>
+        </div>
+
+        <button id="transition-to-phase2-btn" class="cesium-button" style="display:none; margin-top: 15px; background-color: #4a90e2;">Proceed to Mission Hub (Return to Earth)</button>
+    </div>
+</div>
+
+<!-- START: Phase 2 Mission Hub -->
+<div id="phase2-mission-hub" class="control-panel draggable-panel" style="display:none;">
+    <div class="panel-header">
+        <h4 class="panel-title">Phase 2: Mitigation Design</h4>
+        <button class="minimize-btn" title="Minimize/Restore">_</button>
+    </div>
+    <div class="panel-content">
+        <!-- Budget Display -->
+        <div class="status-display">
+            <span>Budget:</span>
+            <span id="phase2-budget-display">$2.00 B</span>
+        </div>
+        <div class="status-display">
+            <span>Mass:</span>
+            <span id="phase2-mass-display">0 / 0 kg</span>
+        </div>
+        <div class="status-display">
+            <span>Δv Budget:</span>
+            <span id="phase2-deltav-display">0 m/s</span>
+        </div>
+        <hr>
+
+        <!-- Step 1: Launch Vehicle -->
+        <div class="design-step">
+            <label for="launch-vehicle-select">1. Launch Vehicle</label>
+            <select id="launch-vehicle-select">
+                <!-- Options will be populated by JS -->
+            </select>
+            <p class="spec-text" id="launch-vehicle-spec"></p>
+        </div>
+
+        <!-- Step 2: Propulsion System -->
+        <div class="design-step">
+            <label for="propulsion-select">2. Propulsion System</label>
+            <select id="propulsion-select">
+                 <!-- Options will be populated by JS -->
+            </select>
+             <p class="spec-text" id="propulsion-spec"></p>
+        </div>
+
+        <!-- Step 3: Payload Design -->
+        <div class="design-step">
+            <label>3. Kinetic Impactor</label>
+            <div class="slider-container">
+                <label for="impactor-mass-slider">Mass: <span id="impactor-mass-value">500</span> kg</label>
+                <input type="range" min="100" max="10000" value="500" class="slider" id="impactor-mass-slider">
+            </div>
+            <select id="impactor-material-select" style="margin-top: 10px;">
+                <!-- Options will be populated by JS -->
+            </select>
+            <p class="spec-text" id="material-spec"></p>
+        </div>
+        <hr>
+
+        <!-- Step 4: Launch Window -->
+        <div class="design-step">
+            <label>4. Launch Window (Trajectory)</label>
+            <div id="porkchop-plot-options">
+              <!-- REPLACE the existing porkchop buttons with these -->
+               <button class="porkchop-btn" data-time="25" data-deltav="7500">Emergency Transfer (25 days)<br><small>Cost: 7500 m/s Δv</small></button>
+              <button class="porkchop-btn" data-time="45" data-deltav="5500">Fast Transfer (45 days)<br><small>Cost: 5500 m/s Δv</small></button>
+               <button class="porkchop-btn" data-time="70" data-deltav="4200">Balanced Transfer (70 days)<br><small>Cost: 4200 m/s Δv</small></button>
+             <p class="spec-text" id="trajectory-spec" style="text-align: center;"></p>
+        </div>
+        
+        <button id="launch-mitigation-btn" class="cesium-button" disabled style="margin-top: 15px; background-color: #e24a4a;">Launch Mitigation Mission</button>
+    </div>
+</div>
+<!-- END: Phase 2 Mission Hub -->
+
+<!-- START: Phase 2 Dashboard -->
+<!-- START: Phase 2 Dashboard -->
+<div id="phase2-dashboard" class="control-panel draggable-panel" style="display:none; position: absolute; bottom: 15px; right: 15px; width: 280px;">
+    <div class="panel-header">
+        <h4 class="panel-title">Mission Status</h4>
+        <button class="minimize-btn" title="Minimize/Restore">_</button>
+    </div>
+    <div class="panel-content">
+        <div class="status-display">
+            <!-- UPDATED LABEL -->
+            <span>Launch Prep Time:</span>
+            <span id="status-prep-time">-- days</span>
+        </div>
+        <div class="status-display">
+            <span>System Reliability:</span>
+            <span id="status-reliability">-- %</span>
+        </div>
+        <div class="status-display">
+            <span>Earth Departure Burn:</span>
+            <span id="status-escape-burn">-- hours</span>
+        </div>
+        <hr>
+        <!-- UPDATED TEXT -->
+        <p class="spec-text">Total time and reliability estimates based on vehicle integration and payload complexity.</p>
+    </div>
+</div>
+<!-- END: Phase 2 Dashboard -->
+<!-- END: Phase 2 Dashboard -->
+
+      <div id="sandbox-controls" class="control-panel" style="display:none;">
+        <hr>
+        <p id="sandbox-instructions">Welcome to the Sandbox!</p>
+        <select id="curated-neo-select"></select>
+        <button id="launch-btn" disabled>Launch</button>
+      </div>
+    </div>
+
+    <!-- Asteroid Information Dashboard (hidden by default) -->
+    <div id="asteroid-dashboard" style="display:none;">
+      <button class="close-btn" id="close-dashboard-btn">&times;</button>
+      <h4>Asteroid Dashboard</h4>
+      <input type="search" list="asteroid-list" id="asteroid-search" placeholder="Search by name or designation...">
+       <datalist id="asteroid-list"></datalist>
+      <div class="filter-group">
+        <label>Threat Classification:</label>
+        <div>
+          <input type="checkbox" id="filter-planet-killer">
+          <label for="filter-planet-killer">Planet Killer</label>
+        </div>
+        <div>
+          <input type="checkbox" id="filter-city-killer">
+          <label for="filter-city-killer">City Killer</label>
+        </div>
+        <div>
+          <input type="checkbox" id="filter-pha">
+          <label for="filter-pha">Potentially Hazardous (PHA)</label>
+        </div>
+      </div>
+
+      <div class="filter-group">
+        <label for="orbit-class-select">Orbit Class:</label>
+        <select id="orbit-class-select">
+          <option value="all" selected>-- Any --</option>
+          <option value="AMO">Amor (AMO)</option>
+          <option value="APO">Apollo (APO)</option>
+          <option value="ATE">Aten (ATE)</option>
+          <option value="IEO">Apohele (IEO)</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label>Composition Type:</label>
+         <div>
+           <input type="checkbox" id="filter-metallic">
+           <label for="filter-metallic">Metallic</label>
+         </div>
+         <div>
+           <input type="checkbox" id="filter-silicone">
+           <label for="filter-silicone">Silicone</label>
+         </div>
+         <div>
+           <input type="checkbox" id="filter-carbon">
+           <label for="filter-carbon">Carbonaceous</label>
+         </div>
+      </div>
+    </div>
+
+
+<!-- Impact Countdown Timer -->
+<div id="timer-wrapper">
+  <div id="impact-timer-container" style="display:none;">
+    <p>TIME UNTIL IMPACT</p>
+    <h1 id="impact-timer-display">--:--:--:--</h1>
+  </div>
+</div>
+
+<script type="module" src="/src/main.js"></script>
+
+</body>
+</html>

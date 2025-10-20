@@ -1,0 +1,8 @@
+\begindata
+    KERNELS_TO_LOAD = (
+        'kernels/naif0012.tls',
+        'kernels/pck00010.tpc',
+        'kernels/de440.bsp',
+        'kernels/codes_300ast_20100725.bsp'
+    )
+\enddata
