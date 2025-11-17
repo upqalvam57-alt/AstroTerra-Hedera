@@ -3,16 +3,25 @@ import json
 import os
 import requests
 import spiceypy as spice
-from fastapi import FastAPI, HTTPException, Response
+from datetime import datetime, timezone
+from fastapi import FastAPI, HTTPException, Response, Request
+from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.concurrency import run_in_threadpool
 
 import phase1_simulation as sim
-import phase3_trajectory as p3_traj 
+import phase3_trajectory as p3_traj
+import hedera_service
 
 # --- App Initialization ---
 app = FastAPI(title="AstroTerra Backend (Pre-computed)", version="2.0.0")
+
+@app.get("/")
+def get_root():
+    """A simple endpoint to check if the server is running."""
+    return {"message": "AstroTerra Backend is running!"}
+
 
 # --- Middleware ---
 app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_credentials=True, allow_methods=["*"], allow_headers=["*"])
@@ -21,7 +30,16 @@ app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_credentials=True, 
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 # FIX: The 'static' directory is inside the 'Backend' sub-directory.
 STATIC_DIR = os.path.join(PROJECT_ROOT, "static")
-app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
+
+@app.get("/static/{path:path}")
+async def serve_static(path: str):
+    static_file_path = os.path.join(STATIC_DIR, path)
+    if not os.path.exists(static_file_path):
+        raise HTTPException(status_code=404, detail="File not found")
+    
+    response = FileResponse(static_file_path)
+    response.headers["Access-Control-Allow-Origin"] = "*"
+    return response
 
 # --- Helper Function (copied from original) ---
 def get_asteroid_classification(h_mag, is_pha):
@@ -44,21 +62,18 @@ async def start_new_simulation():
     """
     Loads the PRE-COMPUTED 'Impactor 2025' mission from the static file.
     """
-    # 1. This line creates the exact path to your file: "Backend/static/impactor.czml"
-    impactor_czml_path = os.path.join(STATIC_DIR, "impactor.czml")
+    # This line creates the exact path to your file: "Backend/static/impactor2025.czml"
+    impactor_czml_path = os.path.join(STATIC_DIR, "impactor2025.czml")
 
-    # 2. This checks if that file actually exists.
     if not os.path.exists(impactor_czml_path):
         raise HTTPException(
             status_code=500, 
-            detail="Error: 'impactor.czml' not found. Please run the precompute_impactor.py script first."
+            detail="Error: 'impactor2025.czml' not found. Please run the precompute_impactor.py script first."
         )
     
-    # 3. This opens and reads your 'impactor.czml' file.
     with open(impactor_czml_path, "r") as f:
         impactor_czml_data = json.load(f)
 
-    # 4. This creates a simple status message for the UI.
     mock_sim_state = {
         "phase": "confirmation",
         "impact_probability": 1.0,
@@ -67,9 +82,7 @@ async def start_new_simulation():
         "time_to_impact_days": 90
     }
     
-    # 5. This sends the content of your 'impactor.czml' file to the frontend.
     return {"simulation_state": mock_sim_state, "czml": impactor_czml_data}
-
 @app.post("/simulation/observe")
 async def observe_threat():
     """Runs one observation, refining the orbit and returning the new state and CZML."""
@@ -79,10 +92,42 @@ async def observe_threat():
     czml_data = await run_in_threadpool(sim.generate_threat_czml)
     return {"simulation_state": sim_state, "czml": czml_data}
 
+@app.post("/simulation/decision")
+async def make_simulation_decision(payload: dict):
+    """
+    Makes the final decision on whether to launch the probe and audits it to HCS.
+    """
+    launch_probe = payload.get("launch_probe")
+    if launch_probe is None:
+        raise HTTPException(status_code=400, detail="Missing 'launch_probe' boolean in request body.")
+
+    sim_state = await run_in_threadpool(sim.make_decision, launch_probe)
+    if sim_state is None:
+        raise HTTPException(status_code=400, detail="Simulation is not in a state where a decision can be made.")
+    
+    return {"simulation_state": sim_state}
+
 @app.get("/simulation/state")
 async def get_simulation_state():
     """Gets the current state of the mission without changing it."""
     return {"simulation_state": sim.SIMULATION_STATE}
+
+@app.get("/api/audit")
+async def get_audit_log():
+    """
+    Retrieves the public audit trail from the Hedera Mirror Node.
+    """
+    try:
+        audit_log = await hedera_service.get_audit_trail()
+        return {"audit_log": audit_log}
+    except Exception as e:
+        # Log the exception for debugging purposes
+        print(f"ERROR in /api/audit: {str(e)}")
+        # Return a generic error response to the client
+        raise HTTPException(
+            status_code=500,
+            detail="Failed to retrieve audit trail. Please check the server logs for more information."
+        )
 
 
 # --- ADD THIS ENTIRE NEW SECTION FOR PHASE 3 ---
@@ -93,7 +138,13 @@ async def launch_mitigation_vehicle(payload: dict):
     Calculates the initial trajectory for the mitigation vehicle based on
     Phase 2 design choices and a precise launch time from the frontend.
     """
+    # --- SPICE KERNEL MANAGEMENT ---
+    # The kernels need to be loaded for the str2et call, and for the trajectory
+    # calculation. We wrap this in a try/finally to ensure kernels are cleared.
+    meta_kernel_path = os.path.join(PROJECT_ROOT, "kernels", "meta_kernel.txt")
+    
     try:
+        spice.furnsh(meta_kernel_path)
         print("--- LAUNCH REQUEST RECEIVED ---")
         # Extract data sent from the frontend
         trajectory_params = payload.get("trajectory")
@@ -102,14 +153,17 @@ async def launch_mitigation_vehicle(payload: dict):
         if not trajectory_params or not launch_time_iso:
             raise HTTPException(status_code=400, detail="Missing trajectory_params or launchTimeISO in request.")
 
-        # FIX: SPICE's str2et is strict and doesn't like the 'Z' UTC designator.
+        # FIX: SPICE's str2et is strict and doesn't like the 'Z' UTC designator or timezone offsets.
         if launch_time_iso.endswith('Z'):
             launch_time_iso = launch_time_iso[:-1]
+        if '+' in launch_time_iso:
+            launch_time_iso = launch_time_iso.split('+')[0]
+        
+        launch_time_iso = launch_time_iso.replace('T', ' ')
 
-        # Convert the ISO launch time string to SPICE Ephemeris Time (ET)
         launch_time_et = spice.str2et(launch_time_iso)
 
-        # Call the new module to do the heavy lifting in a background thread
+        # Call the trajectory calculation function in a background thread
         czml_data = await run_in_threadpool(
             p3_traj.generate_mitigation_czml,
             trajectory_params,
@@ -120,27 +174,17 @@ async def launch_mitigation_vehicle(payload: dict):
 
     except Exception as e:
         print(f"ERROR in launch_mitigation_vehicle: {str(e)}")
+        # Format the SPICE error if it is one
+        if hasattr(e, 'value'):
+             raise HTTPException(status_code=500, detail=f"SPICE Error: {e.value}")
         raise HTTPException(status_code=500, detail=f"Failed to calculate trajectory: {str(e)}")
+    finally:
+        # Ensure kernels are always unloaded
+        spice.kclear()
 
 
 # --- API ENDPOINTS ---
-@app.get("/neos/curated_list")
-async def get_curated_neo_list():
-    try:
-        response = await run_in_threadpool(requests.get, "https://ssd-api.jpl.nasa.gov/sbdb_query.api", params={"limit": 500, "fields": "spkid,full_name,H,pha", "sb-class": "APO"}, timeout=30)
-        response.raise_for_status()
-        raw_data = response.json()
-        planet_killers, city_killers = [], []
-        for item in raw_data.get("data", []):
-            spkid, fullname, h, pha = item
-            h_mag = float(h) if h is not None else None; is_pha = pha == 'Y'
-            classification = get_asteroid_classification(h_mag, is_pha)
-            if classification == 'PLANET_KILLER' and len(planet_killers) < 5: planet_killers.append({"spkid": spkid, "name": fullname})
-            elif classification == 'CITY_KILLER' and len(city_killers) < 5: city_killers.append({"spkid": spkid, "name": fullname})
-            if len(planet_killers) >= 5 and len(city_killers) >= 5: break
-        return {"planet_killers": planet_killers, "city_killers": city_killers}
-    except requests.RequestException as e:
-        raise HTTPException(status_code=500, detail=f"SBDB API error: {str(e)}")
+
 
 # --- Add this function to your app.py ---
 # --- (This is the new, correct code) ---
@@ -198,13 +242,41 @@ async def get_neo_catalog_czml():
 
     return Response(content=json.dumps(combined_data), media_type='application/json')
 
+from fastapi.responses import FileResponse
+
 # (Add this to the end of backend/app.py)
+
+@app.get("/favicon.ico", include_in_schema=False)
+async def favicon():
+    return FileResponse(os.path.join(PROJECT_ROOT, "..", "Frontend", "public", "vite.svg"))
 
 @app.get("/test")
 async def run_test():
     """A simple endpoint to check if the server is reloading."""
     print("--- TEST ENDPOINT WAS SUCCESSFULLY CALLED ---")
     return {"message": "Hello from the test endpoint!"}
+
+# --- HACKATHON DEMO ENDPOINT ---
+@app.post("/simulation/audit_test")
+async def audit_test():
+    """
+    A temporary endpoint to directly trigger a 'Probe Launch' audit message
+    for the hackathon demo.
+    """
+    topic_id = os.getenv("HCS_TOPIC_ID")
+    if not topic_id:
+        raise HTTPException(status_code=500, detail="HCS_TOPIC_ID not found in .env file.")
+    
+    message = f"Decision at {datetime.now(timezone.utc).isoformat()}: User chose to LAUNCH the probe."
+    
+    success = await run_in_threadpool(hedera_service.submit_hcs_message, topic_id, message)
+
+    if success:
+        return {"message": "Successfully submitted 'Probe Launch' audit message."}
+    else:
+        raise HTTPException(status_code=500, detail="Failed to submit audit message.")
+
+# (Add this to the VERY END of your backend/app.py file)
 
 # (Add this to the VERY END of your backend/app.py file)
 

@@ -3,6 +3,7 @@ from datetime import datetime, timedelta, timezone
 import math
 import os
 import json
+import hedera_service
 
 # --- Vector Math Helpers ---
 
@@ -103,6 +104,34 @@ def perform_observation():
         SIMULATION_STATE["cone_scale"] = 0.0
 
     print("--- Observation Performed. State:", SIMULATION_STATE)
+    return SIMULATION_STATE
+
+def make_decision(launch_probe: bool):
+    """
+    Records the final decision on whether to launch the probe and audits it
+    to the Hedera Consensus Service.
+    """
+    global SIMULATION_STATE
+    # if not SIMULATION_STATE.get("active") or SIMULATION_STATE.get("phase") != "confirmation":
+    #     print("--- Cannot make a decision. Simulation not in 'confirmation' phase. ---")
+    #     return None
+
+    SIMULATION_STATE["phase"] = "decision"
+    SIMULATION_STATE["decision_made"] = "launch" if launch_probe else "no_launch"
+    
+    # Audit the decision to HCS
+    topic_id = os.getenv("HCS_TOPIC_ID")
+    if not topic_id:
+        print("--- HCS AUDIT FAILED: HEDERA_TOPIC_ID not found in .env file. ---")
+    else:
+        decision_message = f"User chose to {'LAUNCH' if launch_probe else 'NOT LAUNCH'} the probe."
+        success = hedera_service.submit_hcs_message(topic_id, decision_message)
+        if success:
+            print(f"--- HCS AUDIT: Successfully submitted decision: '{decision_message}' ---")
+        else:
+            print(f"--- HCS AUDIT FAILED: Could not submit message to topic {topic_id}. ---")
+
+    print("--- Decision Made. State:", SIMULATION_STATE)
     return SIMULATION_STATE
 
 def generate_threat_czml():

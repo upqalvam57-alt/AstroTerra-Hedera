@@ -16,7 +16,7 @@
       
   <!-- This is the replacement for the main-actions div -->
       <div id="main-actions">
-        <button id="sandbox-init-btn">Impact Simulation Sandbox</button>
+        
         <button id="mission-select-btn">Mitigation Strategy Scenarios</button>
         <button id="simulate-orbits-btn">Simulate NEO Orbits</button> 
         <button id="heatmap-btn">NEO Heatmap</button>
@@ -166,6 +166,31 @@
 </div>
 <!-- END: Phase 2 Dashboard -->
 <!-- END: Phase 2 Dashboard -->
+
+<!-- START: Phase 3 Mission Ops -->
+<div id="phase3-mission-ops" class="control-panel draggable-panel" style="display:none;">
+    <div class="panel-header">
+        <h4 class="panel-title">Phase 3: Mission Operations</h4>
+        <button class="minimize-btn" title="Minimize/Restore">_</button>
+    </div>
+    <div class="panel-content">
+        <div class="status-display">
+            <span>Remaining Δv:</span>
+            <span id="phase3-deltav-display">-- m/s</span>
+        </div>
+        <div class="status-display">
+            <span>Light-Time Delay:</span>
+            <span id="phase3-light-time-display">-- s</span>
+        </div>
+        <div class="status-display">
+            <span>Probability of Intercept:</span>
+            <span id="phase3-intercept-prob-display">-- %</span>
+        </div>
+        <hr>
+        <button id="plan-tcm-btn">Plan Trajectory Correction Maneuver (TCM)</button>
+    </div>
+</div>
+<!-- END: Phase 3 Mission Ops -->
 
       <div id="sandbox-controls" class="control-panel" style="display:none;">
         <hr>

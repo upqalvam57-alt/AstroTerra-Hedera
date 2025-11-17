@@ -13,6 +13,7 @@
     "vite-plugin-cesium": "^1.2.23"
   },
   "dependencies": {
+    "@hashgraph/sdk": "^2.76.0",
     "cesium": "^1.133.1"
   }
 }

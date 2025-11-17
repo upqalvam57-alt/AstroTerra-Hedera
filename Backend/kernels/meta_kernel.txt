@@ -1,8 +1,18 @@
 \begindata
-    KERNELS_TO_LOAD = (
-        'kernels/naif0012.tls',
-        'kernels/pck00010.tpc',
-        'kernels/de440.bsp',
-        'kernels/codes_300ast_20100725.bsp'
-    )
-\enddata
+
+   PATH_VALUES = (
+      'C:/Users/lenovo/Downloads/AstroTerra/Backend/kernels'
+   )
+
+   PATH_SYMBOLS = (
+      'KERNELS'
+   )
+
+   KERNELS_TO_LOAD = (
+      '$KERNELS/naif0012.tls',
+      '$KERNELS/Gravity.tpc',
+      '$KERNELS/earth_latest_high_prec.bpc',
+      '$KERNELS/codes_300ast_20100725.bsp'
+   )
+
+\begintext

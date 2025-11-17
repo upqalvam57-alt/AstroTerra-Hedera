@@ -12,3 +12,6 @@ Frontend/dist/
 
 # IDE / Editor specific
 .vscode/
+
+# SPICE kernels
+Backend/kernels/de440.bsp

@@ -7,7 +7,7 @@ import json
 # --- Configuration ---
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 KERNELS_DIR = os.path.join(PROJECT_ROOT, "kernels")
-spice.furnsh(os.path.join(KERNELS_DIR, "meta_kernel.txt"))
+
 
 def get_position_from_czml(czml_data, target_et):
     """
@@ -22,7 +22,11 @@ def get_position_from_czml(czml_data, target_et):
     if not position_prop or 'cartesian' not in position_prop:
         raise ValueError("Impactor packet does not contain cartesian position data.")
 
-    epoch_et = spice.str2et(position_prop['epoch'])
+    epoch_str = position_prop['epoch']
+    if '+' in epoch_str:
+        epoch_str = epoch_str.split('+')[0]
+    epoch_str = epoch_str.replace('T', ' ')
+    epoch_et = spice.str2et(epoch_str)
     cartesian_data = position_prop['cartesian']
 
     # Reshape the flat data array into a (N, 4) array of [time, x, y, z]
@@ -53,92 +57,182 @@ def get_position_from_czml(czml_data, target_et):
 
 def generate_mitigation_czml(trajectory_params, start_time_et):
     """
-    Calculates the spacecraft trajectory using the "Hybrid Directional Kick" method.
-    This respects the user's chosen Delta-V to create different trajectory types.
+    Calculates the trajectory for the mitigation vehicle into a parking orbit.
     """
-    print("--- GENERATING SPACECRAFT CZML (Hybrid Directional Kick Method) ---")
-
-    # 1. GET PARAMETERS FROM USER'S CHOICE
-    travel_time_days = int(trajectory_params['travel_time_days'])
-    delta_v_mps = int(trajectory_params['required_deltav'])
-    travel_time_seconds = travel_time_days * 86400
-    arrival_time_et = start_time_et + travel_time_seconds
-
-    # 2. GET INITIAL & FINAL STATES
-    # Earth state from SPICE
-    earth_state_launch, _ = spice.spkgeo(targ=399, et=start_time_et, ref='ECLIPJ2000', obs=0)
-    earth_pos_launch = np.array(earth_state_launch[:3])
-    earth_vel_launch = np.array(earth_state_launch[3:])
+    # --- KERNEL MANAGEMENT FOR WORKER THREAD ---
+    # This function runs in a separate thread, so it needs to load kernels for its own context.
+    # The meta-kernel file now contains the absolute path to the kernels.
+    PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
+    KERNELS_DIR = os.path.join(PROJECT_ROOT, "kernels")
+    meta_kernel_path = os.path.join(KERNELS_DIR, "meta_kernel.txt")
     
-    # Asteroid state from our fictional CZML
-    static_dir = os.path.join(PROJECT_ROOT, "static")
-    impactor_czml_path = os.path.join(static_dir, "impactor2025.czml")
-    with open(impactor_czml_path, 'r') as f:
-        impactor_czml_data = json.load(f)
-    
-    asteroid_pos_arrival = get_position_from_czml(impactor_czml_data, arrival_time_et)
+    try:
+        spice.furnsh(meta_kernel_path)
 
-    # 3. CALCULATE THE SPACECRAFT'S INITIAL VELOCITY
-    direction_vector = asteroid_pos_arrival - earth_pos_launch
-    norm_direction = direction_vector / np.linalg.norm(direction_vector)
-    delta_v_kms = delta_v_mps / 1000.0
-    kick_velocity = norm_direction * delta_v_kms
-    spacecraft_initial_velocity = earth_vel_launch + kick_velocity
-    
-    print(f"Chosen Δv: {delta_v_mps} m/s. Total initial velocity: {np.linalg.norm(spacecraft_initial_velocity):.2f} km/s")
+        # --- 1. Generate Ascent Trajectory ---
+        # The "profile" will be passed from the frontend based on which porkchop plot is selected
+        trajectory_profile = trajectory_params.get("profile", 1) 
+        ascent_cartesian_points, final_pos_relative, final_vel_relative, ascent_duration = generate_ascent_trajectory(start_time_et, trajectory_profile)
 
-    # 4. PROPAGATE THE ORBIT WITH REBOUND
-    sim = rebound.Simulation()
-    sim.units = ('s', 'km', 'kg')
-    sim.G = 1.32712440018e11 # Sun's gravitational parameter in km^3/s^2
-    sim.add(m=1) # The Sun
+        # --- 2. Orbital Simulation (starts after ascent) ---
+        orbit_start_et = start_time_et + ascent_duration
+        
+        # WORKAROUND: Hardcode Earth GM to bypass persistent SPICE kernel loading issues.
+        gm_earth = 398659.2936294783
+        earth_mass_kg = gm_earth / 6.67430e-20
 
-    sim.add(
-        m=0,
-        x=earth_pos_launch[0], y=earth_pos_launch[1], z=earth_pos_launch[2],
-        vx=spacecraft_initial_velocity[0], vy=spacecraft_initial_velocity[1], vz=spacecraft_initial_velocity[2]
-    )
-    
-    # 5. INTEGRATE AND COLLECT POINTS FOR CZML
-    n_points = 200
-    times = np.linspace(0, travel_time_seconds, n_points)
-    cartesian_points = []
-    epoch = spice.et2utc(start_time_et, 'ISOC', 3)
-    
-    for t in times:
-        sim.integrate(t)
-        particle = sim.particles[1]
-        pos_km = np.array([particle.x, particle.y, particle.z])
-        # CZML format is [TimeDeltaInSeconds, X_meters, Y_meters, Z_meters]
-        cartesian_points.extend([t, pos_km[0] * 1000, pos_km[1] * 1000, pos_km[2] * 1000])
+        sim = rebound.Simulation()
+        sim.units = ('s', 'km', 'kg')
+        sim.add(m=earth_mass_kg) # Earth
+        sim.add(
+            m=0,
+            x=final_pos_relative[0], y=final_pos_relative[1], z=final_pos_relative[2],
+            vx=final_vel_relative[0], vy=final_vel_relative[1], vz=final_vel_relative[2]
+        )
+        
+        # Integrate for a few orbits
+        leo_radius_km = np.linalg.norm(final_pos_relative)
+        orbit_period_seconds = 2 * np.pi * np.sqrt(leo_radius_km**3 / gm_earth)
+        total_orbit_sim_time = orbit_period_seconds * 2
+        n_orbit_points = 200
+        orbit_times = np.linspace(0, total_orbit_sim_time, n_orbit_points)
+        
+        orbital_cartesian_points = []
+        for t in orbit_times:
+            sim.integrate(t)
+            particle_pos = np.array([sim.particles[1].x, sim.particles[1].y, sim.particles[1].z])
+            # Time for orbital points is relative to the start of the orbit phase
+            orbital_cartesian_points.extend([ascent_duration + t, particle_pos[0] * 1000, particle_pos[1] * 1000, particle_pos[2] * 1000])
 
-    # 6. CONSTRUCT THE CZML PACKET
-    arrival_time_iso = spice.et2utc(arrival_time_et, 'ISOC', 3)
-    mitigator_czml = [
-        {
-            "id": "document",
-            "name": "Mitigation Vehicle Trajectory", "version": "1.0",
-            "clock": {
-                "interval": f"{epoch}/{arrival_time_iso}",
-                "currentTime": epoch,
-                "multiplier": 86400, # 1 day per second
-                "range": "CLAMPED"
-            }
-        },
-        {
-            "id": "mitigation_vehicle",
-            "name": "Mitigation Vehicle",
-            "availability": f"{epoch}/{arrival_time_iso}",
-            "model": { "gltf": "/DART.glb", "scale": 200000, "minimumPixelSize": 64 },
-            "path": {
-                "material": { "solidColor": { "color": { "rgba": [255, 0, 255, 255] } } },
-                "width": 2, "resolution": 120
+        # --- 3. Combine Trajectories and Construct CZML ---
+        full_cartesian_points = ascent_cartesian_points + orbital_cartesian_points
+        
+        epoch_iso = spice.et2utc(start_time_et, 'ISOC', 3)
+        end_time_et = orbit_start_et + total_orbit_sim_time
+        end_time_iso = spice.et2utc(end_time_et, 'ISOC', 3)
+
+        mitigator_czml = [
+            {
+                "id": "document",
+                "name": "Mitigation Vehicle Trajectory", "version": "1.0",
+                "clock": {
+                    "interval": f"{epoch_iso}/{end_time_iso}",
+                    "currentTime": epoch_iso,
+                    "multiplier": 100,
+                    "range": "LOOP_STOP"
+                }
             },
-            "position": {
-                "interpolationAlgorithm": "LAGRANGE", "interpolationDegree": 5,
-                "epoch": epoch,
-                "cartesian": cartesian_points
+            {
+                "id": "mitigation_vehicle",
+                "name": "Mitigation Vehicle",
+                "availability": f"{epoch_iso}/{end_time_iso}",
+                "model": { "gltf": "/SLS.glb", "scale": 20000, "minimumPixelSize": 64 },
+                "path": {
+                    "material": { "solidColor": { "color": { "rgba": [0, 255, 255, 255] } } },
+                    "width": 2, "resolution": 120
+                },
+                "position": {
+                    "interpolationAlgorithm": "LAGRANGE", "interpolationDegree": 5,
+                    "referenceFrame": "INERTIAL",
+                    "epoch": epoch_iso,
+                    "cartesian": full_cartesian_points
+                }
             }
-        }
-    ]
-    return mitigator_czml
+        ]
+        return mitigator_czml
+    finally:
+        # Unload kernels to be safe in the worker thread.
+        spice.kclear()
+
+def generate_ascent_trajectory(start_time_et, trajectory_profile):
+    """
+    Generates a simplified, curved ascent trajectory from launch to the Karman line (100km).
+    This is a simplified analytical model, not a full physics simulation.
+    """
+    # --- Ascent Parameters ---
+    g = 9.81 / 1000  # km/s^2
+    thrust_acceleration = 0.03 # km/s^2 (approx. 3g)
+    burn_duration = 150  # seconds
+    initial_vertical_duration = 10 # seconds
+    dt = 0.5  # time step in seconds
+    karman_line_altitude_km = 100
+
+    if trajectory_profile == 1:
+        pitch_over_angle_deg = 1.0
+    elif trajectory_profile == 2:
+        pitch_over_angle_deg = 1.5
+    else:
+        pitch_over_angle_deg = 2.0
+
+    # --- State variables in local ENU frame ---
+    pos = np.array([0.0, 0.0, 0.0])  # East, North, Up
+    vel = np.array([0.0, 0.0, 0.0])
+    
+    # --- Launch site setup for frame conversion ---
+    launch_lon_rad = np.radians(-80.6490)
+    launch_lat_rad = np.radians(28.5729)
+    earth_radii = [6378.1366, 6378.1366, 6356.7519]
+    re = earth_radii[0]
+    flattening = (re - earth_radii[2]) / re
+    launch_pos_itrf93 = spice.georec(launch_lon_rad, launch_lat_rad, 0, re, flattening)
+
+    ascent_cartesian_points = []
+    time = 0
+    
+    while pos[2] < karman_line_altitude_km:
+        itrf_to_j2000 = spice.pxform('ITRF93', 'J2000', start_time_et + time)
+        
+        # --- Calculate forces ---
+        gravity = np.array([0, 0, -g])
+        
+        thrust = np.array([0.0, 0.0, 0.0])
+        if time < burn_duration:
+            if time < initial_vertical_duration:
+                thrust_direction = np.array([0, 0, 1])
+            else:
+                # Simple gravity turn: pitch over and then align with velocity
+                if np.linalg.norm(vel) > 0:
+                    thrust_direction = vel / np.linalg.norm(vel)
+                else: # Initially, pitch over slightly
+                    pitch_rad = np.radians(90 - pitch_over_angle_deg)
+                    thrust_direction = np.array([np.sin(pitch_rad), 0, np.cos(pitch_rad)])
+
+            thrust = thrust_direction * thrust_acceleration
+
+        # --- Integrate ---
+        accel = thrust + gravity
+        vel += accel * dt
+        pos += vel * dt
+        time += dt
+
+        # --- Convert to J2000 ---
+        up = launch_pos_itrf93 / np.linalg.norm(launch_pos_itrf93)
+        east = np.cross([0,0,1], up)
+        east = east / np.linalg.norm(east)
+        north = np.cross(up, east)
+        
+        enu_to_itrf_matrix = np.column_stack((east, north, up))
+        
+        pos_itrf = enu_to_itrf_matrix @ pos
+        pos_j2000 = itrf_to_j2000 @ pos_itrf
+        
+        ascent_cartesian_points.extend([time, pos_j2000[0] * 1000, pos_j2000[1] * 1000, pos_j2000[2] * 1000])
+
+    # --- Final State Conversion ---
+    itrf_to_j2000 = spice.pxform('ITRF93', 'J2000', start_time_et + time)
+    d_matrix = spice.pxfrm2('ITRF93', 'J2000', start_time_et + time, start_time_et+time)[1]
+    rotation_vel = d_matrix @ launch_pos_itrf93
+
+    up = launch_pos_itrf93 / np.linalg.norm(launch_pos_itrf93)
+    east = np.cross([0,0,1], up)
+    east = east / np.linalg.norm(east)
+    north = np.cross(up, east)
+    enu_to_itrf_matrix = np.column_stack((east, north, up))
+
+    vel_itrf = enu_to_itrf_matrix @ vel
+    vel_j2000 = (itrf_to_j2000 @ vel_itrf) + rotation_vel
+
+    final_pos_relative = pos_j2000
+    final_vel_relative = vel_j2000
+
+    return ascent_cartesian_points, final_pos_relative, final_vel_relative, time

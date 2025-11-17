@@ -1,0 +1,62 @@
+### Hedera Mirror Node REST Client Configuration
+#
+# This file is configured for use with the VS Code REST Client extension.
+# It allows you to query the Hedera Mirror Node API directly from your editor.
+#
+# For more information on the REST Client extension, visit:
+# https://marketplace.visualstudio.com/items?itemName=humao.rest-client
+
+# --- Environment Variables ---
+#
+# You can set variables here to easily switch between networks or targets.
+# The HEDERA_TOPIC_ID can be found in your Backend/.env file.
+
+# @mirrorNodeUrl = https://mainnet.mirrornode.hedera.com
+@mirrorNodeUrl = https://testnet.mirrornode.hedera.com
+@topicId = 0.0.7239748
+
+###
+# ===============================================================
+# --- HCS Topic Queries ---
+# ===============================================================
+
+###
+# @name Get Topic Messages
+#
+# Retrieves the list of messages submitted to the specified HCS topic.
+# The messages are returned in descending order by consensus timestamp.
+# The 'message' field is Base64 encoded.
+#
+GET {{mirrorNodeUrl}}/api/v1/topics/{{topicId}}/messages
+Content-Type: application/json
+
+###
+# @name Get Topic Info
+#
+# Retrieves the information about the specified HCS topic, including the
+# sequence number and running hash.
+#
+GET {{mirrorNodeUrl}}/api/v1/topics/{{topicId}}
+Content-Type: application/json
+
+###
+# ===============================================================
+# --- Other Example Queries ---
+# ===============================================================
+
+###
+# @name Get Latest Transactions
+#
+# Retrieves the 25 most recent transactions on the network.
+#
+GET {{mirrorNodeUrl}}/api/v1/transactions
+Content-Type: application/json
+
+###
+# @name Get Account Info
+#
+# Retrieves the details for a specific account.
+# Replace '0.0.2' with any account ID you want to inspect.
+#
+GET {{mirrorNodeUrl}}/api/v1/accounts/0.0.2
+Content-Type: application/json

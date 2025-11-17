@@ -11538,7 +11538,7 @@
             ]
         },
         "model": {
-            "gltf": "https://astroterramitigation.netlify.app/Bennu.glb",
+            "gltf": "/static/Bennu.glb",
             "minimumPixelSize": 80,
             "scale": 20000.0
         },

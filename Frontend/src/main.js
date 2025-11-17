@@ -1,5 +1,3 @@
-
-
 import './style.css';
 import * as Cesium from 'cesium';
 import "cesium/Build/Cesium/Widgets/widgets.css";
@@ -14,9 +12,7 @@ let allNeos = [];
 let heatmapDataSource = null;
 
 // --- SANDBOX GLOBALS ---
-let impactTarget = null;
-let targetMarker = null;
-let sandboxState = 'inactive'; // inactive, selecting_asteroid, selecting_target, ready_to_launch
+
 
 // --- Add these under your SANDBOX GLOBALS ---
 let phase1State = {};
@@ -56,19 +52,20 @@ function createEarthEntity() {
             color: Cesium.Color.DODGERBLUE,
             outlineColor: Cesium.Color.WHITE,
             outlineWidth: 2,
-            disableDepthTestDistance: Number.POSITIVE_INFINITY
-        },
-        label: {
-            text: 'Earth',
-            font: '12pt sans-serif',
-            fillColor: Cesium.Color.WHITE,
-            horizontalOrigin: Cesium.HorizontalOrigin.LEFT,
-            pixelOffset: new Cesium.Cartesian2(15, 0),
-            scaleByDistance: new Cesium.NearFarScalar(1.5e8, 1.0, 5.0e10, 0.2),
-            disableDepthTestDistance: Number.POSITIVE_INFINITY
+            disableDepthTestDistance: Number.POSITIVE_INFINITY,
+            scaleByDistance: new Cesium.NearFarScalar(1.5e6, 1.5, 8.0e7, 0.5)
+            },
+                label: {
+                    text: 'Earth',
+                    font: '12pt sans-serif',
+                    fillColor: Cesium.Color.WHITE,
+                    horizontalOrigin: Cesium.HorizontalOrigin.LEFT,
+                    pixelOffset: new Cesium.Cartesian2(15, 0),
+                    scaleByDistance: new Cesium.NearFarScalar(1.5e8, 1.0, 5.0e10, 0.2),
+                    disableDepthTestDistance: Number.POSITIVE_INFINITY
+                }
+            });
         }
-    });
-}
 
 // REPLACE your entire initialize function with this one:
 function initialize() {
@@ -86,8 +83,7 @@ function initialize() {
         }),
     });
 
-    const handler = new Cesium.ScreenSpaceEventHandler(viewer.canvas);
-    handler.setInputAction(handleGlobeClick, Cesium.ScreenSpaceEventType.LEFT_CLICK);
+    
 
     viewer.entities.add({
         name: 'Earth',
@@ -97,7 +93,8 @@ function initialize() {
             color: Cesium.Color.DODGERBLUE,
             outlineColor: Cesium.Color.WHITE,
             outlineWidth: 2,
-            disableDepthTestDistance: Number.POSITIVE_INFINITY
+            disableDepthTestDistance: Number.POSITIVE_INFINITY,
+            scaleByDistance: new Cesium.NearFarScalar(1.5e6, 1.5, 8.0e7, 0.5)
         },
         label: {
             text: 'Earth',
@@ -120,9 +117,7 @@ function initialize() {
 
     // --- General Listeners ---
     document.getElementById('heatmap-btn').addEventListener('click', visualizeNeoHeatmap);
-    document.getElementById('sandbox-init-btn').addEventListener('click', startSandboxMode);
-    document.getElementById('curated-neo-select').addEventListener('change', handleSandboxAsteroidSelection);
-    document.getElementById('launch-btn').addEventListener('click', launchSimpleImpact);
+    
     document.getElementById('close-dashboard-btn').addEventListener('click', () => {
         document.getElementById('asteroid-dashboard').style.display = 'none';
     });
@@ -189,122 +184,9 @@ document.querySelectorAll('.porkchop-btn').forEach(btn => {
     makeTimerDraggable();
 }
 
-// --- SANDBOX WORKFLOW ---
 
-function startSandboxMode() {
-    sandboxState = 'selecting_asteroid';
-    document.getElementById('asteroid-dashboard').style.display = 'none'; // Hide dashboard
-    
-    // Reset UI
-    viewer.entities.removeAll();
-    if (heatmapDataSource) heatmapDataSource.show = false;
-    impactTarget = null;
-    if(targetMarker) {
-        viewer.entities.remove(targetMarker);
-        targetMarker = null;
-    }
 
-    // Configure UI for sandbox mode
-    document.getElementById('sandbox-controls').style.display = 'block';
-    document.getElementById('sandbox-init-btn').disabled = true;
-    document.getElementById('launch-btn').disabled = true;
-    updateSandboxInstructions();
-}
 
-function handleSandboxAsteroidSelection() {
-    if (sandboxState === 'selecting_asteroid') {
-        sandboxState = 'selecting_target';
-        updateSandboxInstructions();
-    }
-}
-
-function handleGlobeClick(movement) {
-    if (sandboxState !== 'selecting_target') return; // Only handle clicks when in the right state
-
-    const cartesian = viewer.camera.pickEllipsoid(movement.position, viewer.scene.globe.ellipsoid);
-    if (cartesian) {
-        impactTarget = cartesian;
-        sandboxState = 'ready_to_launch';
-
-        if (!targetMarker) {
-            targetMarker = viewer.entities.add({
-                name: 'Impact Target',
-                position: cartesian,
-                point: { pixelSize: 10, color: Cesium.Color.RED, outlineColor: Cesium.Color.WHITE, outlineWidth: 2 }
-            });
-        } else {
-            targetMarker.position = cartesian;
-        }
-        updateSandboxInstructions();
-        document.getElementById('launch-btn').disabled = false; // Enable launch button
-    }
-}
-
-function launchSimpleImpact() {
-    if (sandboxState !== 'ready_to_launch') return;
-
-    const selectElement = document.getElementById('curated-neo-select');
-    const asteroidName = selectElement.options[selectElement.selectedIndex].text;
-
-    console.log(`Launching ${asteroidName} towards target.`);
-    if(targetMarker) viewer.entities.add(targetMarker); // Ensure marker stays
-
-    const startPosition = Cesium.Cartesian3.multiplyByScalar(Cesium.Cartesian3.normalize(impactTarget, new Cesium.Cartesian3()), 500000, new Cesium.Cartesian3());
-    const endPosition = impactTarget;
-    const totalSeconds = 10;
-    const startTime = viewer.clock.currentTime.clone();
-    const stopTime = Cesium.JulianDate.addSeconds(startTime, totalSeconds, new Cesium.JulianDate());
-
-    const positionProperty = new Cesium.SampledPositionProperty();
-    positionProperty.addSample(startTime, startPosition);
-    positionProperty.addSample(stopTime, endPosition);
-
-    const asteroidEntity = viewer.entities.add({
-        name: asteroidName,
-        availability: new Cesium.TimeIntervalCollection([new Cesium.TimeInterval({ start: startTime, stop: stopTime })]),
-        position: positionProperty,
-        model: { uri: 'Bennu.glb', minimumPixelSize: 64 },
-        path: new Cesium.PathGraphics({ width: 2, material: Cesium.Color.ORANGE.withAlpha(0.5) })
-    });
-
-    viewer.clock.startTime = startTime.clone();
-    viewer.clock.stopTime = stopTime.clone();
-    viewer.clock.currentTime = startTime.clone();
-    viewer.clock.clockRange = Cesium.ClockRange.LOOP_STOP;
-    viewer.clock.multiplier = 1;
-    viewer.timeline.zoomTo(startTime, stopTime);
-    viewer.flyTo(asteroidEntity);
-
-    // Reset for next scenario
-    resetSandbox();
-}
-
-function resetSandbox() {
-    sandboxState = 'inactive';
-    document.getElementById('sandbox-controls').style.display = 'none';
-    document.getElementById('sandbox-init-btn').disabled = false;
-    updateSandboxInstructions();
-}
-
-function updateSandboxInstructions() {
-    const instructionsP = document.getElementById('sandbox-instructions');
-    if (!instructionsP) return;
-
-    switch (sandboxState) {
-        case 'selecting_asteroid':
-            instructionsP.textContent = '1. Select an asteroid from the list.';
-            break;
-        case 'selecting_target':
-            instructionsP.textContent = '2. Click on the globe to set an impact target.';
-            break;
-        case 'ready_to_launch':
-            instructionsP.textContent = '3. Target acquired. Press Launch!';
-            break;
-        default:
-            instructionsP.textContent = 'Welcome to the Sandbox!';
-            break;
-    }
-}
 
 async function populateCuratedList() {
     try {
@@ -567,21 +449,29 @@ async function startPhase1Mission() {
         // Adjust model scale to be dynamic
         const impactorEntity = phase1DataSource.entities.getById('impactor2025');
         if (impactorEntity && impactorEntity.model) {
-            impactorEntity.model.scale = new Cesium.CallbackProperty(function(time, result) {
-                const modelPosition = impactorEntity.position.getValue(time, result);
-                if (modelPosition) {
-                    const distance = Cesium.Cartesian3.distance(viewer.camera.positionWC, modelPosition);
-                    return calculateScale(distance);
-                }
-                return 20000.0; // default scale
-            }, false);
+            impactorEntity.model.scale = 1.0;
         }    }// --- Add these two new functions anywhere in main.js ---
 
 // In main.js, replace the existing function
 // In main.js, replace the existing function
-function launchCharacterizationProbe() {
+async function launchCharacterizationProbe() {
     missionState.probeLaunched = true; 
-    alert("You have chosen to launch a characterization probe. This will provide vital data but costs precious time and $200M from your budget.");
+
+    try {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/simulation/decision`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ launch_probe: true })
+        });
+        const result = await response.json();
+        if (!response.ok) {
+            throw new Error(result.detail || 'Failed to make decision.');
+        }
+        alert("Decision to LAUNCH probe has been audited on the Hedera network.");
+    } catch (error) {
+        console.error("Failed to audit decision:", error);
+        alert(`Error: ${error.message}`);
+    }
 
     // --- ADDITION: JUMP CLOCK FORWARD 30 DAYS ---
     // This represents the time cost of launching the probe.
@@ -612,7 +502,7 @@ function launchCharacterizationProbe() {
         name: "Characterization Probe",
         availability: new Cesium.TimeIntervalCollection([new Cesium.TimeInterval({ start: startTime, stop: stopTime })]),
         position: positionProperty,
-        model: { uri: '/OSIRIS.glb', minimumPixelSize: 48 },
+        model: { uri: '/OSIRIS.glb', scale: 1.0 },
         path: new Cesium.PathGraphics({ width: 1, material: Cesium.Color.CYAN.withAlpha(0.7) })
     });
 
@@ -625,10 +515,25 @@ function launchCharacterizationProbe() {
 }
 
 // In main.js, replace the existing function
-function proceedBlind() {
+async function proceedBlind() {
     console.log("Proceeding with blind launch...");
     missionState.probeLaunched = false;
-    alert("You have chosen to proceed directly to mitigation design. This saves time, but you will be operating with less precise data, increasing the risk of failure.");
+
+    try {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/simulation/decision`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ launch_probe: false })
+        });
+        const result = await response.json();
+        if (!response.ok) {
+            throw new Error(result.detail || 'Failed to make decision.');
+        }
+        alert("Decision to NOT LAUNCH probe has been audited on the Hedera network.");
+    } catch (error) {
+        console.error("Failed to audit decision:", error);
+        alert(`Error: ${error.message}`);
+    }
     
     // Fly camera back to a general Earth view
     viewer.trackedEntity = undefined; // Stop tracking any entity
@@ -676,6 +581,9 @@ function updateImpactTimer() {
 function transitionToPhase2() {
     console.log("Transitioning to Phase 2: Mitigation Design Hub.");
     
+    // --- REALISM: Set clock to 1x speed for Phase 2 ---
+    viewer.clock.multiplier = 1;
+
     // Hide Phase 1 controls
     document.getElementById('phase1-mission-controls').style.display = 'none';
 
@@ -987,7 +895,12 @@ async function launchMitigationMission() {
     // 2. CALCULATE THE PRECISE LAUNCH TIME
     const currentTime = viewer.clock.currentTime;
     const actualLaunchTime = Cesium.JulianDate.addDays(currentTime, launchPrepTimeDays, new Cesium.JulianDate());
-    const launchTimeISO = Cesium.JulianDate.toIso8601(actualLaunchTime, 0) + 'Z';
+     let launchTimeISO = Cesium.JulianDate.toIso8601(actualLaunchTime, 3); 
+    
+    // Remove the 'Z' to make it compatible with SPICE's str2et function.
+    if (launchTimeISO.endsWith('Z')) {
+        launchTimeISO = launchTimeISO.slice(0, -1);
+    }
     
     console.log(`Current Sim Time: ${Cesium.JulianDate.toIso8601(currentTime)}`);
     console.log(`Prep Time: ${launchPrepTimeDays} days`);
@@ -1028,15 +941,11 @@ async function launchMitigationMission() {
         mitigationDataSource = await Cesium.CzmlDataSource.load(result.czml);
         await viewer.dataSources.add(mitigationDataSource);
 
-        // 7. ADVANCE THE GAME CLOCK and FLY THE CAMERA
-        // The player "experiences" the prep time passing instantly.
-        viewer.clock.currentTime = actualLaunchTime.clone();
-        
-        const vehicleEntity = mitigationDataSource.entities.getById('mitigation_vehicle');
-        if (vehicleEntity) {
-            viewer.flyTo(vehicleEntity, { duration: 5.0, offset: new Cesium.HeadingPitchRange(0, -Cesium.Math.toRadians(45), 5000000) });
-            viewer.trackedEntity = vehicleEntity;
-        }
+        // Force the clock multiplier to 1x speed
+        viewer.clock.multiplier = 1;
+
+        // 7. START CINEMATIC LAUNCH
+        await playCinematicLaunch(actualLaunchTime, mitigationDataSource);
 
     } catch (error) {
         console.error("Failed to launch mitigation mission:", error);
@@ -1044,4 +953,53 @@ async function launchMitigationMission() {
         launchBtn.disabled = false; // Re-enable the button on failure
         launchBtn.textContent = "Launch Mitigation Mission";
     }
+}
+
+async function playCinematicLaunch(actualLaunchTime, mitigationDataSource) {
+    // 1. Set up the scene
+    viewer.clock.shouldAnimate = true;
+    viewer.clock.multiplier = 1; // Start at 1x speed
+
+    // 2. Position camera at launch site
+    await viewer.camera.flyTo({
+        destination: Cesium.Cartesian3.fromDegrees(-80.6490, 28.5729, 2000.0), // Closer to the ground
+        orientation: {
+            heading: Cesium.Math.toRadians(0.0),
+            pitch: Cesium.Math.toRadians(-60.0), // Looking up
+            roll: 0.0
+        },
+        duration: 3.0
+    });
+
+    // 3. Create dummy launch vehicle
+    const launchVehicleEntity = viewer.entities.add({
+        name: "Launch Vehicle",
+        position: Cesium.Cartesian3.fromDegrees(-80.6490, 28.5729, 0),
+        model: {
+            uri: '/SLS.glb',
+            scale: 20000,
+            minimumPixelSize: 64
+        }
+    });
+
+    // 4. Animate the launch
+    const launchDuration = 30; // 30 seconds for the animation
+    const launchEndTime = Cesium.JulianDate.addSeconds(viewer.clock.currentTime, launchDuration, new Cesium.JulianDate());
+    const ascentPosition = new Cesium.SampledPositionProperty();
+    ascentPosition.addSample(viewer.clock.currentTime, Cesium.Cartesian3.fromDegrees(-80.6490, 28.5729, 0));
+    ascentPosition.addSample(launchEndTime, Cesium.Cartesian3.fromDegrees(-80.6490, 28.5729, 200000)); // 200km altitude
+    launchVehicleEntity.position = ascentPosition;
+
+    viewer.trackedEntity = launchVehicleEntity;
+
+    // 5. Set the clock to the actual launch time
+    viewer.clock.currentTime = actualLaunchTime.clone();
+
+    // 6. Transition to the real vehicle
+    viewer.entities.remove(launchVehicleEntity);
+    const realVehicle = mitigationDataSource.entities.getById('mitigation_vehicle');
+    if (realVehicle) {
+        viewer.trackedEntity = realVehicle;
+    }
+    viewer.clock.multiplier = 1; // Ensure clock speed is 1x
 }
