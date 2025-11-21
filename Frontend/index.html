@@ -1,3 +1,4 @@
+<!-- START OF FILE Frontend/index.html -->
 <!doctype html>
 <html lang="en">
   <head>
@@ -11,16 +12,15 @@
     <div id="cesiumContainer"></div>
 
     <!-- Main Control Panel -->
-    <div id="controls">
-      <h3 style="color: white; margin: 0 0 15px 0; text-align: center;">AstroTerra</h3>
-      
-  <!-- This is the replacement for the main-actions div -->
-      <div id="main-actions">
-        
-        <button id="mission-select-btn">Mitigation Strategy Scenarios</button>
-        <button id="simulate-orbits-btn">Simulate NEO Orbits</button> 
-        <button id="heatmap-btn">NEO Heatmap</button>
-      </div>
+    <div id="controls" class="control-panel">
+        <h3 style="color: white; margin: 0 0 15px 0; text-align: center;">AstroTerra</h3>
+        <!-- This is the replacement for the main-actions div -->
+        <div id="main-actions">
+          <button id="mission-select-btn">Mitigation Strategy Scenarios</button>
+          <button id="simulate-orbits-btn">Simulate NEO Orbits</button> 
+          <button id="heatmap-btn">NEO Heatmap</button>
+        </div>
+    </div>
   
 <!-- Mission Selection Panel (hidden by default) -->
     <div id="mission-selection-panel" class="control-panel" style="display:none; top: 130px;">
@@ -126,10 +126,9 @@
         <div class="design-step">
             <label>4. Launch Window (Trajectory)</label>
             <div id="porkchop-plot-options">
-              <!-- REPLACE the existing porkchop buttons with these -->
-               <button class="porkchop-btn" data-time="25" data-deltav="7500">Emergency Transfer (25 days)<br><small>Cost: 7500 m/s Δv</small></button>
-              <button class="porkchop-btn" data-time="45" data-deltav="5500">Fast Transfer (45 days)<br><small>Cost: 5500 m/s Δv</small></button>
-               <button class="porkchop-btn" data-time="70" data-deltav="4200">Balanced Transfer (70 days)<br><small>Cost: 4200 m/s Δv</small></button>
+               <button id="porkchop-emergency" class="porkchop-btn" data-time="25" data-deltav="7500">Emergency Transfer (25 days)<br><small>Cost: 7500 m/s Δv</small></button>
+              <button id="porkchop-fast" class="porkchop-btn" data-time="45" data-deltav="5500">Fast Transfer (45 days)<br><small>Cost: 5500 m/s Δv</small></button>
+               <button id="porkchop-balanced" class="porkchop-btn" data-time="70" data-deltav="4200">Balanced Transfer (70 days)<br><small>Cost: 4200 m/s Δv</small></button>
              <p class="spec-text" id="trajectory-spec" style="text-align: center;"></p>
         </div>
         
@@ -138,7 +137,6 @@
 </div>
 <!-- END: Phase 2 Mission Hub -->
 
-<!-- START: Phase 2 Dashboard -->
 <!-- START: Phase 2 Dashboard -->
 <div id="phase2-dashboard" class="control-panel draggable-panel" style="display:none; position: absolute; bottom: 15px; right: 15px; width: 280px;">
     <div class="panel-header">
@@ -165,7 +163,6 @@
     </div>
 </div>
 <!-- END: Phase 2 Dashboard -->
-<!-- END: Phase 2 Dashboard -->
 
 <!-- START: Phase 3 Mission Ops -->
 <div id="phase3-mission-ops" class="control-panel draggable-panel" style="display:none;">
@@ -187,66 +184,76 @@
             <span id="phase3-intercept-prob-display">-- %</span>
         </div>
         <hr>
+        <!-- FIX: Corrected Port to 5176 -->
+        <a id="link-to-phase3-btn" href="http://localhost:5176" target="_blank" class="cesium-button" style="display:none; margin-bottom: 10px; text-align: center; text-decoration: none;">
+          Proceed to Phase 3 (Three.js)
+        </a>
         <button id="plan-tcm-btn">Plan Trajectory Correction Maneuver (TCM)</button>
     </div>
 </div>
 <!-- END: Phase 3 Mission Ops -->
 
-      <div id="sandbox-controls" class="control-panel" style="display:none;">
-        <hr>
-        <p id="sandbox-instructions">Welcome to the Sandbox!</p>
-        <select id="curated-neo-select"></select>
-        <button id="launch-btn" disabled>Launch</button>
-      </div>
+    <div id="sandbox-controls" class="control-panel" style="display:none;">
+      <hr>
+      <p id="sandbox-instructions">Welcome to the Sandbox!</p>
+      <select id="curated-neo-select"></select>
+      <button id="launch-btn" disabled>Launch</button>
     </div>
 
     <!-- Asteroid Information Dashboard (hidden by default) -->
-    <div id="asteroid-dashboard" style="display:none;">
-      <button class="close-btn" id="close-dashboard-btn">&times;</button>
-      <h4>Asteroid Dashboard</h4>
-      <input type="search" list="asteroid-list" id="asteroid-search" placeholder="Search by name or designation...">
-       <datalist id="asteroid-list"></datalist>
-      <div class="filter-group">
-        <label>Threat Classification:</label>
-        <div>
-          <input type="checkbox" id="filter-planet-killer">
-          <label for="filter-planet-killer">Planet Killer</label>
-        </div>
-        <div>
-          <input type="checkbox" id="filter-city-killer">
-          <label for="filter-city-killer">City Killer</label>
-        </div>
-        <div>
-          <input type="checkbox" id="filter-pha">
-          <label for="filter-pha">Potentially Hazardous (PHA)</label>
+    <div id="asteroid-dashboard" class="control-panel draggable-panel" style="display:none;">
+      <div class="panel-header">
+        <h4 class="panel-title">Asteroid Dashboard</h4>
+        <div class="panel-actions">
+          <button class="minimize-btn" title="Minimize/Restore">_</button>
+          <button class="close-btn" id="close-dashboard-btn" title="Close">&times;</button>
         </div>
       </div>
+      <div class="panel-content">
+        <input type="search" list="asteroid-list" id="asteroid-search" placeholder="Search by name or designation...">
+        <datalist id="asteroid-list"></datalist>
+        <div class="filter-group">
+          <label>Threat Classification:</label>
+          <div>
+            <input type="checkbox" id="filter-planet-killer">
+            <label for="filter-planet-killer">Planet Killer</label>
+          </div>
+          <div>
+            <input type="checkbox" id="filter-city-killer">
+            <label for="filter-city-killer">City Killer</label>
+          </div>
+          <div>
+            <input type="checkbox" id="filter-pha">
+            <label for="filter-pha">Potentially Hazardous (PHA)</label>
+          </div>
+        </div>
 
-      <div class="filter-group">
-        <label for="orbit-class-select">Orbit Class:</label>
-        <select id="orbit-class-select">
-          <option value="all" selected>-- Any --</option>
-          <option value="AMO">Amor (AMO)</option>
-          <option value="APO">Apollo (APO)</option>
-          <option value="ATE">Aten (ATE)</option>
-          <option value="IEO">Apohele (IEO)</option>
-        </select>
-      </div>
+        <div class="filter-group">
+          <label for="orbit-class-select">Orbit Class:</label>
+          <select id="orbit-class-select">
+            <option value="all" selected>-- Any --</option>
+            <option value="AMO">Amor (AMO)</option>
+            <option value="APO">Apollo (APO)</option>
+            <option value="ATE">Aten (ATE)</option>
+            <option value="IEO">Apohele (IEO)</option>
+          </select>
+        </div>
 
-      <div class="filter-group">
-        <label>Composition Type:</label>
-         <div>
-           <input type="checkbox" id="filter-metallic">
-           <label for="filter-metallic">Metallic</label>
-         </div>
-         <div>
-           <input type="checkbox" id="filter-silicone">
-           <label for="filter-silicone">Silicone</label>
-         </div>
-         <div>
-           <input type="checkbox" id="filter-carbon">
-           <label for="filter-carbon">Carbonaceous</label>
-         </div>
+        <div class="filter-group">
+          <label>Composition Type:</label>
+          <div>
+            <input type="checkbox" id="filter-metallic">
+            <label for="filter-metallic">Metallic</label>
+          </div>
+          <div>
+            <input type="checkbox" id="filter-silicone">
+            <label for="filter-silicone">Silicone</label>
+          </div>
+          <div>
+            <input type="checkbox" id="filter-carbon">
+            <label for="filter-carbon">Carbonaceous</label>
+          </div>
+        </div>
       </div>
     </div>
 

@@ -1,3 +1,7 @@
+/* --- START OF FILE Frontend/src/style.css --- */
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
 /* Base styles for a full-screen Cesium experience */
 html, body, #cesiumContainer {
   width: 100%; 
@@ -5,7 +9,7 @@ html, body, #cesiumContainer {
   margin: 0; 
   padding: 0; 
   overflow: hidden;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Roboto', sans-serif;
   background-color: #000;
 }
 
@@ -13,13 +17,9 @@ html, body, #cesiumContainer {
 #controls {
   position: absolute;
   top: 15px;
-  left: 15px;
+  left: 50%; /* Centered horizontally */
+  transform: translateX(-50%); /* Adjust for its own width */
   z-index: 10;
-  background-color: rgba(30, 30, 30, 0.9);
-  padding: 15px;
-  border-radius: 10px;
-  border: 1px solid #555;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
   min-width: 250px; /* Give the panel a minimum width */
 }
 
@@ -35,6 +35,7 @@ html, body, #cesiumContainer {
   font-weight: bold;
   transition: background-color 0.2s ease-in-out, transform 0.1s ease;
   width: 100%; /* Make all buttons full-width */
+  box-sizing: border-box; /* Fix button width calculation */
 }
 
 #controls button:hover, .cesium-button:hover {
@@ -56,6 +57,15 @@ html, body, #cesiumContainer {
 }
 #main-actions button:last-child {
   margin-bottom: 0; /* Remove margin from the last button */
+}
+
+/* Base styling for control panels */
+.control-panel {
+  background-color: rgba(30, 30, 30, 0.9);
+  border-radius: 10px;
+  border: 1px solid #555;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  color: #fff; /* Default text color for panels */
 }
 
 /* Styling for the dropdown/select list inside the sandbox panel */
@@ -97,40 +107,36 @@ html, body, #cesiumContainer {
   right: 15px;
   z-index: 10;
   background-color: rgba(30, 30, 30, 0.9);
-  padding: 15px;
   border-radius: 10px;
   border: 1px solid #555;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
-  width: 280px;
+  width: 320px;
   color: #eee;
-  max-height: calc(100vh - 40px);
-  overflow-y: auto;
 }
 
-#asteroid-dashboard h4 {
-  color: white;
-  margin: 0 0 15px 0;
-  text-align: center;
-  font-size: 16px;
-  font-weight: bold;
+#asteroid-dashboard .panel-header {
+  background-color: #4f545c;
+}
+
+#asteroid-dashboard .panel-actions {
+  display: flex;
+  gap: 6px;
 }
 
 #asteroid-dashboard .close-btn {
-  position: absolute;
-  top: 8px;
-  right: 12px;
   background: none;
-  border: none;
-  color: #aaa;
-  font-size: 24px;
-  font-weight: bold;
+  border: 1px solid #777;
+  color: #fff;
+  font-size: 18px;
+  width: 24px;
+  height: 24px;
   cursor: pointer;
   padding: 0;
-  line-height: 1;
-  transition: color 0.2s ease;
+  line-height: 20px;
 }
+
 #asteroid-dashboard .close-btn:hover {
-  color: #fff;
+  background-color: #555;
 }
 
 #asteroid-dashboard input[type="search"],
@@ -186,7 +192,9 @@ html, body, #cesiumContainer {
 }
 /* --- Mission Selection Panel Styles --- */
 #mission-selection-panel {
+  position: absolute;
   top: 130px; 
+  left: 15px;
   width: 300px; 
 }
 
@@ -194,25 +202,18 @@ html, body, #cesiumContainer {
   width: 100%; 
   margin-bottom: 10px; 
   box-sizing: border-box; 
+  cursor: pointer; /* Added for pointer on hover */
 }
 
 #mission-selection-panel button:last-child {
   margin-bottom: 0;
 }
 
-.consequence-text {
-  font-size: 12px;
-  font-style: italic;
-  color: #aaa;
-  margin-top: -5px; 
-  margin-bottom: 15px;
-  padding-left: 10px;
-  border-left: 2px solid #007bff; 
+#mission-selection-panel h4 {
+  text-align: center;
 }
 
 /* --- Impact Timer Styles --- */
-/* FIND AND REPLACE THIS RULE */
-/* Find this rule in your style.css and replace it entirely */
 #impact-timer-container {
     position: absolute;
     top: 15px;
@@ -227,7 +228,7 @@ html, body, #cesiumContainer {
     text-align: center;
     color: white;
     text-shadow: 0 0 8px #ff4500;
-    font-family: 'Courier New', Courier, monospace;
+    font-family: 'Roboto', monospace;
     cursor: move;
 }
 
@@ -238,6 +239,9 @@ html, body, #cesiumContainer {
 
 /* --- Draggable Panel Styles --- */
 .draggable-panel {
+    position: absolute;
+    top: 15px;
+    left: 15px;
     min-width: 320px;
     width: 320px;
     padding: 0; 
@@ -283,25 +287,40 @@ html, body, #cesiumContainer {
     padding: 15px; 
     max-height: 70vh; 
     overflow-y: auto; 
+    overflow-x: hidden;
+}
+
+/* Ensure Phase 2 dashboard can scroll properly when positioned at bottom */
+#phase2-dashboard {
+    max-height: calc(100vh - 30px); /* Account for bottom: 15px margin */
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* Prevent panel itself from scrolling */
+}
+
+#phase2-dashboard .panel-content {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    min-height: 0; /* Important for flex scrolling */
 }
 
 .panel-content.minimized {
     display: none;
 }
 #phase1-mission-controls .panel-content p {
-    color: #fffac9;
+    color: #fff;
 }
 
 /* --- Phase 2: Mitigation Hub Styles --- */
-/* FIND AND REPLACE THIS ENTIRE BLOCK */
 .status-display {
     display: flex;
     justify-content: space-between; /* Pushes children to opposite ends */
     align-items: center; /* Vertically aligns them */
     font-size: 14px;
-    color: #eee;
+    color: #fff;
     margin-bottom: 8px;
-    font-family: 'Courier New', Courier, monospace;
+    font-family: 'Roboto', sans-serif;
 }
 .status-display span:first-child {
     font-weight: bold;
@@ -314,7 +333,7 @@ html, body, #cesiumContainer {
     font-weight: bold;
     color: #4CAF50; 
 }
-/* --- END OF REPLACEMENT BLOCK --- */
+
 #status-reliability {
     /* Color will be set by JS */
     font-weight: bold;
@@ -333,7 +352,7 @@ html, body, #cesiumContainer {
 .spec-text {
     font-size: 12px;
     font-style: italic;
-    color: #aaa;
+    color: #e0e0e0;
     margin-top: -5px;
     margin-bottom: 5px;
 }
@@ -344,7 +363,7 @@ html, body, #cesiumContainer {
 }
 .slider-container label {
     font-size: 14px;
-    color: #ccc;
+    color: #fff;
     white-space: nowrap; /* Prevent label from wrapping */
 }
 .slider {
@@ -384,9 +403,30 @@ html, body, #cesiumContainer {
     font-weight: normal;
     color: #ccc;
 }
-/* Add this to your existing CSS file */
 .porkchop-btn.selected {
   background-color: #6a6a6a; /* A slightly lighter grey */
   border: 2px solid #ffffff; /* A solid white border */
   box-shadow: 0 0 10px rgba(255, 255, 255, 0.5); /* A subtle glow */
+}
+
+/* Ensure Phase 2 mission hub can scroll properly */
+#phase2-mission-hub {
+    max-height: 80vh;
+    display: flex;
+    flex-direction: column;
+}
+
+#phase2-mission-hub .panel-content {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    min-height: 0;
+}
+
+/* --- FIX: Position Phase 3 Panel LOWER so it doesn't overlap title --- */
+#phase3-mission-ops {
+  left: 50%;
+  transform: translateX(-50%);
+  top: 180px; /* Moved down from default 15px to avoid title overlap */
+  z-index: 20; /* Ensure it stays on top */
 }

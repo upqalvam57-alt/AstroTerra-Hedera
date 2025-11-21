@@ -2,25 +2,20 @@ import './style.css';
 import * as Cesium from 'cesium';
 import "cesium/Build/Cesium/Widgets/widgets.css";
 
-// --- CESIUM ION ACCESS TOKEN ---
+
 Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJhMjU4NWQ2Ny1lYTdmLTQ4ODItOTk4My04NDQ1YTU2OTgzYWYiLCJpZCI6MzQzMjk4LCJpYXQiOjE3NTg0NjM3NTF9.bwBjRfRrtHpqecI9SWIAFMQM87USrFy1QfqnxsMywO8';
 
-// --- GLOBAL VARIABLES ---
 let viewer;
 
 let allNeos = [];
 let heatmapDataSource = null;
+let targetMarker = null;
 
-// --- SANDBOX GLOBALS ---
 
-
-// --- Add these under your SANDBOX GLOBALS ---
 let phase1State = {};
 let phase1DataSource = null;
 let launchPointMarker = null;
-// --- Add this near your other global variables ---
 let missionState = {};
-// --- Add this near your other global variables ---
 let impactTime = null;
 let mitigationDataSource = null;
 
@@ -34,15 +29,12 @@ const PROPULSION_SYSTEMS = {
     electric: { name: "Ion Drive (NEXT-C)", cost: 0.1, mass_kg: 800, isp: 4100, spec: "Isp: 4,100s | Mass: 800 kg", construction_time: 10, reliability: 0.95 }
 };
 
-// This one needs a new property for our slider logic
 const IMPACTOR_MATERIALS = {
     aluminum: { name: "Aluminum", density: 2700, beta: 1.2, spec: "Low density, standard momentum transfer.", max_mass_kg: 5000 },
     tungsten: { name: "Tungsten", density: 19300, beta: 2.5, spec: "High density, high momentum transfer (Beta: 2.5).", max_mass_kg: 20000 }
 };
-// --- INITIALIZATION ---
 document.addEventListener('DOMContentLoaded', initialize);
 
-// --- Place this entire new function BEFORE the initialize() function ---
 function createEarthEntity() {
     viewer.entities.add({
         id: "earth_marker",
@@ -67,7 +59,6 @@ function createEarthEntity() {
             });
         }
 
-// REPLACE your entire initialize function with this one:
 function initialize() {
     viewer = new Cesium.Viewer('cesiumContainer', {
         shouldAnimate: true,
@@ -109,36 +100,49 @@ function initialize() {
     });
 
     viewer.clock.onTick.addEventListener(() => { viewer.clock.shouldAnimate = true; });
-    viewer.scene.camera.frustum.far = Number.POSITIVE_INFINITY;
+    viewer.scene.camera.frustum.far = 1e15;
     viewer.scene.globe.enableLighting = true;
+    
+    viewer.scene.screenSpaceCameraController.minimumZoomDistance = 1.0;
+    viewer.scene.screenSpaceCameraController.maximumZoomDistance = 1e15;
+    
+    viewer.scene.screenSpaceCameraController.enableCollisionDetection = false;
+    
+    viewer.scene.camera.moveEnd.addEventListener(() => {
+        const position = viewer.camera.position;
+        const direction = viewer.camera.direction;
+        
+        if (!Cesium.defined(position) || !Cesium.defined(direction) ||
+            !isFinite(position.x) || !isFinite(position.y) || !isFinite(position.z) ||
+            !isFinite(direction.x) || !isFinite(direction.y) || !isFinite(direction.z)) {
+            viewer.camera.setView({
+                destination: Cesium.Cartesian3.fromDegrees(-90, 45, 15000000)
+            });
+        }
+    });
 
     console.log("Cesium Globe initialized successfully!");
     createEarthEntity();
 
-    // --- General Listeners ---
     document.getElementById('heatmap-btn').addEventListener('click', visualizeNeoHeatmap);
     
     document.getElementById('close-dashboard-btn').addEventListener('click', () => {
         document.getElementById('asteroid-dashboard').style.display = 'none';
     });
 
-    // --- Mission Listeners ---
     document.getElementById('mission-select-btn').addEventListener('click', toggleMissionSelector);
     document.getElementById('start-planet-killer-btn').addEventListener('click', startPhase1Mission);
     document.getElementById('start-city-killer-btn').addEventListener('click', () => {
         alert('This scenario is not yet implemented.');
     });
 
-    // --- Phase 1 Listeners ---
     document.getElementById('phase1-choice-probe-btn').addEventListener('click', launchCharacterizationProbe);
     document.getElementById('phase1-choice-blind-btn').addEventListener('click', proceedBlind);
     document.getElementById('transition-to-phase2-btn').addEventListener('click', transitionToPhase2);
 
-    // --- Phase 2 Listeners ---
     document.getElementById('launch-vehicle-select').addEventListener('change', updatePhase2Calculations);
     document.getElementById('propulsion-select').addEventListener('change', updatePhase2Calculations);
     
-    // *** THIS IS THE NEW LISTENER FOR THE SLIDER ***
     document.getElementById('impactor-mass-slider').addEventListener('input', (event) => {
         document.getElementById('impactor-mass-value').textContent = event.target.value;
         updatePhase2Calculations();
@@ -159,28 +163,22 @@ function initialize() {
 
 document.querySelectorAll('.porkchop-btn').forEach(btn => {
     btn.addEventListener('click', (event) => {
-        // 1. Handle the highlighting UI
         document.querySelectorAll('.porkchop-btn').forEach(b => b.classList.remove('selected'));
         event.currentTarget.classList.add('selected');
 
-        // 2. Create the visual launch point on the globe
-        createOrUpdateLaunchPoint(); // <-- THIS IS THE NEW LINE
+        createOrUpdateLaunchPoint(); 
 
-        // 3. Update all mission calculations
         updatePhase2Calculations();
     });
 });
 
-    // --- ADD THIS NEW LISTENER FOR THE LAUNCH BUTTON ---
     document.getElementById('launch-mitigation-btn').addEventListener('click', launchMitigationMission);
 
-    // --- Final Setup ---
     viewer.camera.setView({ destination: Cesium.Cartesian3.fromDegrees(-90, 45, 15000000) });
     fetchAndPopulateNeoList();
     preloadHeatmapData(false);
     populateCuratedList();
-    makePanelsDraggable();
-    setupPanelToggles();
+    initializePanels();
     makeTimerDraggable();
 }
 
@@ -225,16 +223,11 @@ async function populateCuratedList() {
     }
 }
 
-// --- EXISTING / DEPRECATED FUNCTIONS ---
-
-// In main.js
-
 async function preloadHeatmapData(showByDefault = false) {
     try {
         const neosUrl = `${import.meta.env.VITE_API_URL}/czml/catalog`;
         heatmapDataSource = await Cesium.CzmlDataSource.load(neosUrl);
         
-        // --- REPLACE THE OLD forEach LOOP WITH THIS NEW LOGIC ---
         const dotImage = createDotImage();
         const neoScaleByDistance = new Cesium.NearFarScalar(1.5e8, 1.0, 5.0e9, 0.5);
 
@@ -242,26 +235,21 @@ async function preloadHeatmapData(showByDefault = false) {
             const entityType = entity.properties?.entity_type?.getValue();
 
             if (entityType === 'planet') {
-                // It's a planet, so we trust the styling from the CZML
-                // and just ensure the label is visible.
                 if (entity.label) {
                     entity.label.scaleByDistance = new Cesium.NearFarScalar(1.5e8, 1.0, 8.0e10, 0.2);
                 }
             } else {
-                // It's an asteroid, apply the billboard and classification color
                 entity.billboard = {
                     image: dotImage,
                     color: getColorByClassification(entity.properties.classification?.getValue()),
                     scaleByDistance: neoScaleByDistance,
                     disableDepthTestDistance: Number.POSITIVE_INFINITY
                 };
-                // Hide asteroid labels by default to reduce clutter
                 if (entity.label) {
                     entity.label.show = false;
                 }
             }
         });
-        // --- END OF REPLACEMENT ---
 
         heatmapDataSource.show = showByDefault;
         await viewer.dataSources.add(heatmapDataSource);
@@ -308,8 +296,6 @@ async function fetchAndPopulateNeoList() {
     }
 }
 
-// --- HELPER FUNCTIONS ---
-
 function calculateScale(distance) {
     const near = 1.0e6;
     const far = 2.0e11;
@@ -340,23 +326,11 @@ function getColorByClassification(classification) {
     }
 }
 
-// ===============================================================
-// --- PHASE 1: MISSION LOGIC ---
-// ===============================================================
-
-// --- Add this new function ---
 function toggleMissionSelector() {
     const missionPanel = document.getElementById('mission-selection-panel');
     const isVisible = missionPanel.style.display === 'block';
     missionPanel.style.display = isVisible ? 'none' : 'block';
 }
-// --- ADD THIS NEW IMPLEMENTATION ---
-// In main.js
-
-// In main.js
-// In main.js, replace the entire function
-// In main.js
-
 async function startPhase1Mission() {
   try {
     console.log("Initializing Phase 1: Planet Killer Scenario...");
@@ -443,7 +417,16 @@ async function startPhase1Mission() {
     viewer.flyTo(phase1DataSource, {
         duration: 3.0
       }).then(() => {
-          viewer.camera.zoomOut(2.5e10);
+          try {
+              viewer.camera.zoomOut(2.5e10);
+          } catch (error) {
+              console.warn("Zoom operation failed, using safe camera position:", error);
+              viewer.camera.setView({
+                  destination: Cesium.Cartesian3.fromDegrees(-90, 45, 15000000)
+              });
+          }
+      }).catch((error) => {
+          console.error("FlyTo operation failed:", error);
       });
     
         // Adjust model scale to be dynamic
@@ -758,53 +741,83 @@ function updatePhase2Dashboard(vehicle, propulsion, impactorMass) {
 // --- UI INTERACTIVITY HELPERS ---
 // ===============================================================
 
-function makePanelsDraggable() {
+function initializePanels() {
     const panels = document.querySelectorAll('.draggable-panel');
-    let activePanel = null;
-    let offsetX, offsetY;
-
-    const onMouseDown = (e, panel) => {
-        if (e.target.classList.contains('minimize-btn')) return; // Don't drag when clicking minimize
-        activePanel = panel;
-        offsetX = e.clientX - panel.offsetLeft;
-        offsetY = e.clientY - panel.offsetTop;
-        document.addEventListener('mousemove', onMouseMove);
-        document.addEventListener('mouseup', onMouseUp);
-    };
-
-    const onMouseMove = (e) => {
-        if (!activePanel) return;
-        e.preventDefault();
-        activePanel.style.left = `${e.clientX - offsetX}px`;
-        activePanel.style.top = `${e.clientY - offsetY}px`;
-    };
-
-    const onMouseUp = () => {
-        activePanel = null;
-        document.removeEventListener('mousemove', onMouseMove);
-        document.removeEventListener('mouseup', onMouseUp);
-    };
 
     panels.forEach(panel => {
         const header = panel.querySelector('.panel-header');
+        const minimizeBtn = panel.querySelector('.minimize-btn');
+        const content = panel.querySelector('.panel-content');
+        let active = false;
+        let currentX;
+        let currentY;
+        let initialX;
+        let initialY;
+        let xOffset = 0;
+        let yOffset = 0;
+
+        // --- Dragging Logic ---
         if (header) {
-            header.addEventListener('mousedown', (e) => onMouseDown(e, panel));
+            header.addEventListener("mousedown", dragStart);
+            // Attach end-drag listeners to the whole document
+            document.addEventListener("mouseup", dragEnd);
+            document.addEventListener("mouseleave", dragEnd);
+            document.addEventListener("mousemove", drag);
+        }
+
+        function dragStart(e) {
+            // Do not drag if clicking the minimize button
+            if (e.target === minimizeBtn) {
+                return;
+            }
+            // Make sure the panel being dragged is on top
+            panel.style.zIndex = 100;
+            
+            initialX = e.clientX - xOffset;
+            initialY = e.clientY - yOffset;
+            active = true;
+        }
+
+        function dragEnd(e) {
+            if (active) {
+                // Reset z-index when drag ends
+                panel.style.zIndex = 10;
+                initialX = currentX;
+                initialY = currentY;
+                active = false;
+            }
+        }
+
+        function drag(e) {
+            if (active) {
+                e.preventDefault();
+                currentX = e.clientX - initialX;
+                currentY = e.clientY - initialY;
+                xOffset = currentX;
+                yOffset = currentY;
+                setTranslate(currentX, currentY, panel);
+            }
+        }
+
+        function setTranslate(xPos, yPos, el) {
+            el.style.transform = `translate3d(${xPos}px, ${yPos}px, 0)`;
+        }
+
+        // --- Minimizing Logic ---
+        // Do not apply minimize logic to the main controls panel
+        if (minimizeBtn && content && panel.id !== 'controls') {
+            minimizeBtn.addEventListener('click', () => {
+                const isMinimized = content.classList.toggle('minimized');
+                minimizeBtn.textContent = isMinimized ? '' : ''; // Using FontAwesome-like icons
+                minimizeBtn.title = isMinimized ? 'Restore' : 'Minimize';
+            });
+        } else if (minimizeBtn && panel.id === 'controls') {
+            // If it's the main controls panel, hide the minimize button entirely
+            minimizeBtn.style.display = 'none';
         }
     });
 }
 
-function setupPanelToggles() {
-    const panels = document.querySelectorAll('.draggable-panel');
-    panels.forEach(panel => {
-        const minimizeBtn = panel.querySelector('.minimize-btn');
-        const content = panel.querySelector('.panel-content');
-        if (minimizeBtn && content) {
-            minimizeBtn.addEventListener('click', () => {
-                content.classList.toggle('minimized');
-            });
-        }
-    });
-}
 // --- Add this entire new function ---
 function makeTimerDraggable() {
     const timer = document.getElementById('impact-timer-container');
@@ -880,126 +893,29 @@ function createOrUpdateLaunchPoint() {
     console.log("Launch point marker created at Cape Canaveral.");
 }
 
+/* --- Frontend/src/main.js --- */
+// Find the launchMitigationMission function and REPLACE it with this simplified version.
+// Also DELETE the 'startThreeJsSimulation' function entirely to fix your error.
+
 async function launchMitigationMission() {
-    console.log("--- PHASE 3: LAUNCHING MITIGATION MISSION ---");
+    console.log("--- PHASE 3: LAUNCHING (MOCKUP MODE) ---");
 
     const launchBtn = document.getElementById('launch-mitigation-btn');
     launchBtn.disabled = true;
-    launchBtn.textContent = "CALCULATING TRAJECTORY...";
+    launchBtn.textContent = "LAUNCHING...";
 
-    // 1. GATHER DATA FROM THE UI
-    const vehicleKey = document.getElementById('launch-vehicle-select').value;
-    const trajectoryBtn = document.querySelector('.porkchop-btn.selected');
-    const launchPrepTimeDays = parseInt(document.getElementById('status-prep-time').textContent, 10);
+    // Simulate a brief "processing" delay for effect
+    setTimeout(() => {
+        // 1. Just open the Phase 3 window directly
+        // We assume Phase 3 is running on port 5176 as per your previous setup
+        window.open("http://localhost:5176", "_blank");
 
-    // 2. CALCULATE THE PRECISE LAUNCH TIME
-    const currentTime = viewer.clock.currentTime;
-    const actualLaunchTime = Cesium.JulianDate.addDays(currentTime, launchPrepTimeDays, new Cesium.JulianDate());
-     let launchTimeISO = Cesium.JulianDate.toIso8601(actualLaunchTime, 3); 
-    
-    // Remove the 'Z' to make it compatible with SPICE's str2et function.
-    if (launchTimeISO.endsWith('Z')) {
-        launchTimeISO = launchTimeISO.slice(0, -1);
-    }
-    
-    console.log(`Current Sim Time: ${Cesium.JulianDate.toIso8601(currentTime)}`);
-    console.log(`Prep Time: ${launchPrepTimeDays} days`);
-    console.log(`Calculated Launch Time for Backend: ${launchTimeISO}`);
-
-    // 3. CONSTRUCT THE PAYLOAD FOR THE BACKEND
-    const payload = {
-        trajectory: {
-            travel_time_days: parseInt(trajectoryBtn.dataset.time, 10),
-            required_deltav: parseInt(trajectoryBtn.dataset.deltav, 10)
-        },
-        launchTimeISO: launchTimeISO
-    };
-
-    try {
-        // 4. SEND DATA TO THE BACKEND
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/simulation/launch_mitigation`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
-        });
-
-        if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.detail || `HTTP error! Status: ${response.status}`);
-        }
-        const result = await response.json();
-
-        // 5. TRANSITION THE UI FROM PHASE 2 TO PHASE 3
+        // 2. Reset UI
+        launchBtn.textContent = "Mission Launched";
+        
+        // Optional: Update UI to show we are done
         document.getElementById('phase2-mission-hub').style.display = 'none';
-        document.getElementById('impact-timer-container').style.borderColor = '#00ffff'; // Change timer color to cyan for cruise phase
         document.getElementById('phase3-mission-ops').style.display = 'block';
-
-        // 6. LOAD THE NEW TRAJECTORY DATA INTO CESIUM
-        if (mitigationDataSource) {
-            viewer.dataSources.remove(mitigationDataSource, true);
-        }
-        mitigationDataSource = await Cesium.CzmlDataSource.load(result.czml);
-        await viewer.dataSources.add(mitigationDataSource);
-
-        // Force the clock multiplier to 1x speed
-        viewer.clock.multiplier = 1;
-
-        // 7. START CINEMATIC LAUNCH
-        await playCinematicLaunch(actualLaunchTime, mitigationDataSource);
-
-    } catch (error) {
-        console.error("Failed to launch mitigation mission:", error);
-        alert(`Launch Failed: ${error.message}`);
-        launchBtn.disabled = false; // Re-enable the button on failure
-        launchBtn.textContent = "Launch Mitigation Mission";
-    }
-}
-
-async function playCinematicLaunch(actualLaunchTime, mitigationDataSource) {
-    // 1. Set up the scene
-    viewer.clock.shouldAnimate = true;
-    viewer.clock.multiplier = 1; // Start at 1x speed
-
-    // 2. Position camera at launch site
-    await viewer.camera.flyTo({
-        destination: Cesium.Cartesian3.fromDegrees(-80.6490, 28.5729, 2000.0), // Closer to the ground
-        orientation: {
-            heading: Cesium.Math.toRadians(0.0),
-            pitch: Cesium.Math.toRadians(-60.0), // Looking up
-            roll: 0.0
-        },
-        duration: 3.0
-    });
-
-    // 3. Create dummy launch vehicle
-    const launchVehicleEntity = viewer.entities.add({
-        name: "Launch Vehicle",
-        position: Cesium.Cartesian3.fromDegrees(-80.6490, 28.5729, 0),
-        model: {
-            uri: '/SLS.glb',
-            scale: 20000,
-            minimumPixelSize: 64
-        }
-    });
-
-    // 4. Animate the launch
-    const launchDuration = 30; // 30 seconds for the animation
-    const launchEndTime = Cesium.JulianDate.addSeconds(viewer.clock.currentTime, launchDuration, new Cesium.JulianDate());
-    const ascentPosition = new Cesium.SampledPositionProperty();
-    ascentPosition.addSample(viewer.clock.currentTime, Cesium.Cartesian3.fromDegrees(-80.6490, 28.5729, 0));
-    ascentPosition.addSample(launchEndTime, Cesium.Cartesian3.fromDegrees(-80.6490, 28.5729, 200000)); // 200km altitude
-    launchVehicleEntity.position = ascentPosition;
-
-    viewer.trackedEntity = launchVehicleEntity;
-
-    // 5. Set the clock to the actual launch time
-    viewer.clock.currentTime = actualLaunchTime.clone();
-
-    // 6. Transition to the real vehicle
-    viewer.entities.remove(launchVehicleEntity);
-    const realVehicle = mitigationDataSource.entities.getById('mitigation_vehicle');
-    if (realVehicle) {
-        viewer.trackedEntity = realVehicle;
-    }
-    viewer.clock.multiplier = 1; // Ensure clock speed is 1x
+        document.getElementById('link-to-phase3-btn').style.display = 'block';
+    }, 1000);
 }

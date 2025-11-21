@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AstroTerra - Mission Operations</title>
+    <style>
+      body { 
+        margin: 0; 
+        overflow: hidden; 
+        background-color: #000; 
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        user-select: none;
+      }
+      
+      /* HUD STYLING */
+      #hud-container {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none; /* Let clicks pass through to 3D scene */
+      }
+
+      .panel {
+        position: absolute;
+        background: rgba(10, 20, 40, 0.85);
+        border: 1px solid #00ffff;
+        color: #00ffff;
+        padding: 15px;
+        border-radius: 5px;
+        pointer-events: auto; /* Re-enable clicks for buttons */
+        box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
+        backdrop-filter: blur(5px);
+      }
+
+      /* Top Bar */
+      #top-bar {
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        gap: 30px;
+        text-align: center;
+      }
+
+      .stat-box h4 { margin: 0; font-size: 12px; opacity: 0.7; letter-spacing: 1px; }
+      .stat-box div { font-size: 20px; font-weight: bold; text-shadow: 0 0 5px #00ffff; }
+
+      /* Bottom Controls */
+      #controls-panel {
+        bottom: 30px;
+        left: 50%;
+        transform: translateX(-50%);
+        text-align: center;
+        min-width: 300px;
+      }
+
+      button {
+        background: transparent;
+        border: 1px solid #00ffff;
+        color: #00ffff;
+        padding: 10px 20px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        text-transform: uppercase;
+        transition: all 0.3s;
+        margin: 5px;
+      }
+
+      button:hover {
+        background: rgba(0, 255, 255, 0.2);
+        box-shadow: 0 0 10px #00ffff;
+      }
+
+      button:disabled {
+        border-color: #555;
+        color: #555;
+        cursor: not-allowed;
+        box-shadow: none;
+      }
+
+      button.primary {
+        background: rgba(0, 255, 255, 0.1);
+      }
+
+      /* Status Text */
+      #mission-status {
+        font-size: 18px;
+        margin-bottom: 10px;
+        font-weight: bold;
+        color: #ff4500; /* Default to warning color */
+      }
+
+      /* Loading Overlay */
+      #loading {
+        position: absolute;
+        top: 0; left: 0; width: 100%; height: 100%;
+        background: black;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #00ffff;
+        z-index: 999;
+        transition: opacity 1s;
+      }
+    </style>
+  </head>
+  <body>
+    
+    <div id="loading"><h1>INITIALIZING MISSION LINK...</h1></div>
+
+    <!-- HUD OVERLAY -->
+    <div id="hud-container">
+      
+      <!-- Top Stats -->
+      <div id="top-bar" class="panel">
+        <div class="stat-box">
+          <h4>REMAINING Δv</h4>
+          <div id="deltav-display">4,200 m/s</div>
+        </div>
+        <div class="stat-box">
+          <h4>INTERCEPT PROBABILITY</h4>
+          <div id="prob-display" style="color: #ff4500;">12.4%</div>
+        </div>
+        <div class="stat-box">
+          <h4>LIGHT-TIME DELAY</h4>
+          <div>0.42 s</div>
+        </div>
+      </div>
+
+      <!-- Bottom Controls -->
+      <div id="controls-panel" class="panel">
+        <div id="mission-status">STATUS: TRAJECTORY DRIFT DETECTED</div>
+        <button id="plan-btn" class="primary">Plan Correction Maneuver</button>
+        <button id="execute-btn" disabled>Execute Burn</button>
+      </div>
+
+    </div>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

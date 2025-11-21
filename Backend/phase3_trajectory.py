@@ -37,7 +37,6 @@ def get_position_from_czml(czml_data, target_et):
     target_time_from_epoch = target_et - epoch_et
 
     # Find the index where the target time would be inserted
-    # This is more efficient than a for loop
     idx = np.searchsorted(times, target_time_from_epoch, side="right")
 
     # Handle edge cases: target time is before the first or after the last sample
@@ -61,7 +60,6 @@ def generate_mitigation_czml(trajectory_params, start_time_et):
     """
     # --- KERNEL MANAGEMENT FOR WORKER THREAD ---
     # This function runs in a separate thread, so it needs to load kernels for its own context.
-    # The meta-kernel file now contains the absolute path to the kernels.
     PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
     KERNELS_DIR = os.path.join(PROJECT_ROOT, "kernels")
     meta_kernel_path = os.path.join(KERNELS_DIR, "meta_kernel.txt")
@@ -174,13 +172,16 @@ def generate_ascent_trajectory(start_time_et, trajectory_profile):
     earth_radii = [6378.1366, 6378.1366, 6356.7519]
     re = earth_radii[0]
     flattening = (re - earth_radii[2]) / re
-    launch_pos_itrf93 = spice.georec(launch_lon_rad, launch_lat_rad, 0, re, flattening)
+    
+    # FIX: Use IAU_EARTH instead of ITRF93 to avoid binary PCK date limit errors
+    launch_pos_fixed = spice.georec(launch_lon_rad, launch_lat_rad, 0, re, flattening)
 
     ascent_cartesian_points = []
     time = 0
     
     while pos[2] < karman_line_altitude_km:
-        itrf_to_j2000 = spice.pxform('ITRF93', 'J2000', start_time_et + time)
+        # FIX: Use IAU_EARTH here as well
+        fixed_to_j2000 = spice.pxform('IAU_EARTH', 'J2000', start_time_et + time)
         
         # --- Calculate forces ---
         gravity = np.array([0, 0, -g])
@@ -206,33 +207,93 @@ def generate_ascent_trajectory(start_time_et, trajectory_profile):
         time += dt
 
         # --- Convert to J2000 ---
-        up = launch_pos_itrf93 / np.linalg.norm(launch_pos_itrf93)
+        up = launch_pos_fixed / np.linalg.norm(launch_pos_fixed)
         east = np.cross([0,0,1], up)
         east = east / np.linalg.norm(east)
         north = np.cross(up, east)
         
-        enu_to_itrf_matrix = np.column_stack((east, north, up))
+        enu_to_fixed_matrix = np.column_stack((east, north, up))
         
-        pos_itrf = enu_to_itrf_matrix @ pos
-        pos_j2000 = itrf_to_j2000 @ pos_itrf
+        pos_fixed = enu_to_fixed_matrix @ pos
+        pos_j2000 = fixed_to_j2000 @ pos_fixed
         
         ascent_cartesian_points.extend([time, pos_j2000[0] * 1000, pos_j2000[1] * 1000, pos_j2000[2] * 1000])
 
     # --- Final State Conversion ---
-    itrf_to_j2000 = spice.pxform('ITRF93', 'J2000', start_time_et + time)
-    d_matrix = spice.pxfrm2('ITRF93', 'J2000', start_time_et + time, start_time_et+time)[1]
-    rotation_vel = d_matrix @ launch_pos_itrf93
-
-    up = launch_pos_itrf93 / np.linalg.norm(launch_pos_itrf93)
+    # FIX: Use IAU_EARTH here as well
+    fixed_to_j2000 = spice.pxform('IAU_EARTH', 'J2000', start_time_et + time)
+    # pxfrm2 returns (state_transform, rotation_matrix, angular_velocity_matrix)
+    # We just want the rotation matrix part for the velocity rotation (index 1? No, pxfrm2 returns 6x6)
+    # Actually, to be safe and simple, let's manually do position and velocity rotation.
+    
+    # Calculate velocity of the launch site due to Earth rotation in J2000
+    state_fixed_j2000 = spice.spkezr('IAU_EARTH', start_time_et + time, 'J2000', 'NONE', 'EARTH')[0]
+    # Wait, spkezr gives Earth relative to something. We want the rotation of the frame.
+    
+    # Let's use the standard state transformation matrix
+    sxform = spice.sxform('IAU_EARTH', 'J2000', start_time_et + time)
+    
+    # Convert final position and velocity from ENU to Fixed
+    up = launch_pos_fixed / np.linalg.norm(launch_pos_fixed)
     east = np.cross([0,0,1], up)
     east = east / np.linalg.norm(east)
     north = np.cross(up, east)
-    enu_to_itrf_matrix = np.column_stack((east, north, up))
+    enu_to_fixed_matrix = np.column_stack((east, north, up))
 
-    vel_itrf = enu_to_itrf_matrix @ vel
-    vel_j2000 = (itrf_to_j2000 @ vel_itrf) + rotation_vel
+    pos_fixed = enu_to_fixed_matrix @ pos
+    vel_fixed = enu_to_fixed_matrix @ vel
+    
+    state_fixed = np.concatenate((pos_fixed, vel_fixed))
+    state_j2000 = sxform @ state_fixed
 
-    final_pos_relative = pos_j2000
-    final_vel_relative = vel_j2000
+    final_pos_relative = state_j2000[0:3]
+    final_vel_relative = state_j2000[3:6]
 
     return ascent_cartesian_points, final_pos_relative, final_vel_relative, time
+
+def calculate_injection_state(trajectory_params, launch_time_et):
+    """
+    CALCULATES THE HANDOFF:
+    Converts the rocket's position from "Earth-Relative" to "Sun-Relative".
+    """
+    # 1. Get the rocket's position relative to Earth at the end of the burn
+    # We reuse your existing ascent function
+    profile = trajectory_params.get("profile", 1)
+    # We don't need the points list (_), just the final pos/vel
+    _, pos_rel, vel_rel, ascent_duration = generate_ascent_trajectory(launch_time_et, profile)
+    
+    # The exact time the engine cuts off
+    injection_et = launch_time_et + ascent_duration
+
+    # 2. Get Earth's position relative to the Sun at that exact second
+    # "J2000" is the standard coordinate system for space
+    state_earth_sun, _ = spice.spkezr('EARTH', injection_et, 'J2000', 'NONE', 'SUN')
+    
+    # Extract X, Y, Z and Velocity X, Y, Z
+    pos_earth_sun = np.array(state_earth_sun[0:3]) # Position of Earth
+    vel_earth_sun = np.array(state_earth_sun[3:6]) # Velocity of Earth
+
+    # 3. THE MATH: Add them together
+    final_pos_sun = pos_earth_sun + pos_rel
+    final_vel_sun = vel_earth_sun + vel_rel
+
+    # 4. Return the data in a clean format
+    return {
+        "epoch_et": injection_et,
+        "position": {
+            "x": final_pos_sun[0],
+            "y": final_pos_sun[1],
+            "z": final_pos_sun[2]
+        },
+        "velocity": {
+            "x": final_vel_sun[0],
+            "y": final_vel_sun[1],
+            "z": final_vel_sun[2]
+        },
+        # We send Earth's position too, so we can draw it in Three.js
+        "earth_position": {
+            "x": pos_earth_sun[0],
+            "y": pos_earth_sun[1],
+            "z": pos_earth_sun[2]
+        }
+    }

@@ -1,3 +1,4 @@
+from contextlib import asynccontextmanager
 import fastapi
 import json 
 import os
@@ -15,7 +16,28 @@ import phase3_trajectory as p3_traj
 import hedera_service
 
 # --- App Initialization ---
-app = FastAPI(title="AstroTerra Backend (Pre-computed)", version="2.0.0")
+# --- 1. LOAD NASA DATA ONCE (The Improvement) ---
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # STARTUP: Load the kernels when server starts
+    print("--- LOADING NASA SPICE KERNELS ---")
+    try:
+        # Make sure this path points to your meta_kernel.txt
+        kernel_path = os.path.join(PROJECT_ROOT, "kernels", "meta_kernel.txt")
+        spice.furnsh(kernel_path)
+        print("--- KERNELS LOADED SUCCESSFULLY ---")
+    except Exception as e:
+        print(f"--- KERNEL LOAD FAILED: {e} ---")
+    
+    yield # The application runs here
+    
+    # SHUTDOWN: Unload kernels when server stops
+    print("--- UNLOADING KERNELS ---")
+    spice.kclear()
+
+# --- App Initialization ---
+# We attach the lifespan logic here
+app = FastAPI(title="AstroTerra Backend", lifespan=lifespan) 
 
 @app.get("/")
 def get_root():
@@ -113,12 +135,36 @@ async def get_simulation_state():
     return {"simulation_state": sim.SIMULATION_STATE}
 
 @app.get("/api/audit")
-async def get_audit_log():
+async def get_audit_log(request: Request, date: str = None, phase: str = None):
     """
     Retrieves the public audit trail from the Hedera Mirror Node.
+    Can be filtered by date (YYYY-MM-DD) and/or a phase string.
     """
     try:
+        # The hedera_service now gets all logs, and we filter them here.
         audit_log = await hedera_service.get_audit_trail()
+
+        # --- Server-Side Filtering ---
+        if date:
+            try:
+                # Convert the incoming YYYY-MM-DD string to a date object
+                filter_date = datetime.strptime(date, "%Y-%m-%d").date()
+                
+                audit_log = [
+                    log for log in audit_log
+                    if datetime.fromtimestamp(float(log['consensus_timestamp']), tz=timezone.utc).date() == filter_date
+                ]
+
+            except ValueError:
+                raise HTTPException(status_code=400, detail="Invalid date format. Please use YYYY-MM-DD.")
+
+        if phase:
+            # Filter logs where the message contains the phase string
+            audit_log = [
+                log for log in audit_log
+                if 'audit_data' in log and 'message' in log['audit_data'] and phase in log['audit_data']['message']
+            ]
+
         return {"audit_log": audit_log}
     except Exception as e:
         # Log the exception for debugging purposes
@@ -267,7 +313,7 @@ async def audit_test():
     if not topic_id:
         raise HTTPException(status_code=500, detail="HCS_TOPIC_ID not found in .env file.")
     
-    message = f"Decision at {datetime.now(timezone.utc).isoformat()}: User chose to LAUNCH the probe."
+    message = f"Phase 2: Decision at {datetime.now(timezone.utc).isoformat()}: User chose to LAUNCH the probe."
     
     success = await run_in_threadpool(hedera_service.submit_hcs_message, topic_id, message)
 
@@ -276,9 +322,38 @@ async def audit_test():
     else:
         raise HTTPException(status_code=500, detail="Failed to submit audit message.")
 
-# (Add this to the VERY END of your backend/app.py file)
+@app.post("/phase3/initial-state")
+async def get_phase3_start_state(payload: dict):
+    """
+    The Bridge: Frontend sends Launch Time -> Backend returns Sun Coordinates.
+    """
+    launch_time_iso = payload.get("launchTimeISO")
+    trajectory_params = payload.get("trajectory", {})
 
-# (Add this to the VERY END of your backend/app.py file)
+    # Safety check
+    if not launch_time_iso:
+        raise HTTPException(status_code=400, detail="Missing launchTimeISO")
+
+    # Clean up the date string so NASA SPICE can read it
+    if launch_time_iso.endswith('Z'): launch_time_iso = launch_time_iso[:-1]
+    if '+' in launch_time_iso: launch_time_iso = launch_time_iso.split('+')[0]
+    launch_time_iso = launch_time_iso.replace('T', ' ')
+
+    try:
+        # Convert text date to NASA "Ephemeris Time" (ET)
+        launch_time_et = spice.str2et(launch_time_iso)
+        
+        # Run the math function we just wrote
+        state = await run_in_threadpool(
+            p3_traj.calculate_injection_state,
+            trajectory_params,
+            launch_time_et
+        )
+        return state
+
+    except Exception as e:
+        print(f"Error in Phase 3 Handover: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
 
 if __name__ == "__main__":
     import uvicorn

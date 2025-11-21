@@ -124,7 +124,7 @@ def make_decision(launch_probe: bool):
     if not topic_id:
         print("--- HCS AUDIT FAILED: HEDERA_TOPIC_ID not found in .env file. ---")
     else:
-        decision_message = f"User chose to {'LAUNCH' if launch_probe else 'NOT LAUNCH'} the probe."
+        decision_message = f"Phase 2: User chose to {'LAUNCH' if launch_probe else 'NOT LAUNCH'} the probe."
         success = hedera_service.submit_hcs_message(topic_id, decision_message)
         if success:
             print(f"--- HCS AUDIT: Successfully submitted decision: '{decision_message}' ---")
