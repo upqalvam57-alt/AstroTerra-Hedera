@@ -1,0 +1,24 @@
+{
+  "name": "astroterra-hedera",
+  "version": "1.0.0",
+  "description": "> **A web-based asteroid impact simulator that integrates Hedera Hashgraph services to create tamper-proof, decentralized, and educational simulations.**",
+  "main": "index.js",
+  "scripts": {
+  "dev": "vite"
+},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/upqalvam57-alt/AstroTerra-Hedera.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/upqalvam57-alt/AstroTerra-Hedera/issues"
+  },
+  "homepage": "https://github.com/upqalvam57-alt/AstroTerra-Hedera#readme",
+  "dependencies": {
+    "vite": "^7.2.4"
+  }
+}

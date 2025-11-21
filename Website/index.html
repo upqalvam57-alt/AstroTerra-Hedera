@@ -1,0 +1,1155 @@
+<html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AstroTerra - Asteroid Impact &amp; Mitigation Simulator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&amp;family=Inter:wght@300;400;500;600&amp;display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0A0F1F;
+            color: #FFFFFF;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        /* Animated Background */
+        .stars-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: linear-gradient(180deg, #0A0F1F 0%, #1a1f35 100%);
+        }
+
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 3s infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        /* Navbar */
+        nav {
+            position: sticky;
+            top: 0;
+            background: rgba(10, 15, 31, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1.5rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(78, 168, 255, 0.2);
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #4EA8FF 0%, #8A5CF5 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: #FFFFFF;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: #4EA8FF;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #4EA8FF;
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Mobile Menu */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 90vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 2rem 5%;
+            position: relative;
+        }
+
+        .hero-content {
+            max-width: 900px;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #4EA8FF 0%, #8A5CF5 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.2;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 3rem;
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.6;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #4EA8FF 0%, #8A5CF5 100%);
+            color: white;
+            padding: 1.2rem 3rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 10px 30px rgba(78, 168, 255, 0.3);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(78, 168, 255, 0.5);
+        }
+
+        /* Section Styles */
+        section {
+            padding: 5rem 5%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: #4EA8FF;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.7);
+            max-width: 800px;
+            margin: 0 auto 4rem;
+            line-height: 1.6;
+        }
+
+        /* Features Section */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .feature-card {
+            background: rgba(78, 168, 255, 0.05);
+            border: 1px solid rgba(78, 168, 255, 0.2);
+            border-radius: 20px;
+            padding: 2.5rem;
+            transition: transform 0.3s, box-shadow 0.3s;
+            backdrop-filter: blur(10px);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(78, 168, 255, 0.2);
+            border-color: rgba(78, 168, 255, 0.5);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #4EA8FF;
+        }
+
+        .feature-card p {
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.6;
+        }
+
+        /* Simulators Preview */
+        .simulators {
+            background: rgba(138, 92, 245, 0.05);
+            padding: 5rem 5%;
+        }
+
+        .simulator-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 3rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .simulator-card {
+            background: rgba(10, 15, 31, 0.8);
+            border: 1px solid rgba(138, 92, 245, 0.3);
+            border-radius: 20px;
+            padding: 2.5rem;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .simulator-card:hover {
+            transform: scale(1.02);
+            border-color: rgba(138, 92, 245, 0.6);
+        }
+
+        .simulator-preview {
+            width: 100%;
+            height: 300px;
+            background: linear-gradient(135deg, rgba(78, 168, 255, 0.2), rgba(138, 92, 245, 0.2));
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+        }
+
+        .simulator-card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: #8A5CF5;
+        }
+
+        .simulator-card p {
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .sim-button {
+            display: inline-block;
+            background: transparent;
+            color: #8A5CF5;
+            padding: 1rem 2.5rem;
+            border: 2px solid #8A5CF5;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .sim-button:hover {
+            background: #8A5CF5;
+            color: white;
+            box-shadow: 0 10px 30px rgba(138, 92, 245, 0.4);
+        }
+
+        /* About Section */
+        #about {
+            background: rgba(78, 168, 255, 0.02);
+        }
+
+        .mission-statement {
+            background: rgba(78, 168, 255, 0.1);
+            border-left: 4px solid #4EA8FF;
+            padding: 2rem;
+            border-radius: 10px;
+            margin-bottom: 4rem;
+            font-size: 1.2rem;
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        /* WRAPPER: Stack the two rows vertically */
+.team-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem; /* Space between the top row and bottom row */
+    width: 100%;
+}
+
+/* ROWS: Arrange items horizontally */
+.team-row {
+    display: flex;
+    flex-direction: row; /* Forces horizontal alignment */
+    justify-content: center; /* Centers them in the middle */
+    flex-wrap: wrap; /* Allows wrapping on small mobile screens */
+    gap: 2rem; /* Space between people side-by-side */
+    width: 100%;
+}
+
+/* CARDS: The individual boxes */
+.team-card {
+    background: rgba(138, 92, 245, 0.1);
+    border: 1px solid rgba(138, 92, 245, 0.3);
+    border-radius: 15px;
+    padding: 2rem;
+    text-align: center;
+    transition: transform 0.3s;
+    
+    /* Fixed width ensures perfect alignment */
+    width: 280px;
+    
+    /* Internal layout for image/text */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Hover Effect */
+.team-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(138, 92, 245, 0.8);
+    background: rgba(138, 92, 245, 0.2);
+}
+
+        .team-avatar {
+    /* 1. Make it smaller and strictly square */
+    width: 90px;
+    height: 90px;
+    
+    /* 2. Force it to stay that size (prevents squashing into an oval) */
+    min-width: 90px;
+    min-height: 90px;
+    
+    /* 3. Make it a circle */
+    border-radius: 50%;
+    overflow: hidden; /* Cuts off the corners */
+    
+    /* 4. Alignment and Border */
+    margin: 0 auto 1rem; /* Center it */
+    border: 2px solid #4EA8FF; /* Thinner, cleaner border */
+    background-color: #1a1f35; /* Background if image loads slow */
+}
+
+/* This targets the image inside the avatar */
+.team-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;   /* Crucial: Zooms in to fill the circle without stretching */
+    object-position: center top; /* Crucial: Focuses on the upper center (the face) */
+    display: block;
+}
+
+        .team-card h4 {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            color: #8A5CF5;
+        }
+
+        .team-card p {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
+        }
+
+        /* Project Overview */
+        .overview-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 3rem;
+        }
+
+        .overview-card {
+            background: rgba(78, 168, 255, 0.05);
+            border: 1px solid rgba(78, 168, 255, 0.2);
+            border-radius: 20px;
+            padding: 3rem;
+        }
+
+        .overview-card h3 {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            color: #4EA8FF;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .overview-card ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .overview-card li {
+            padding: 0.8rem 0;
+            padding-left: 2rem;
+            position: relative;
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.6;
+        }
+
+        .overview-card li:before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: #4EA8FF;
+            font-weight: bold;
+        }
+
+        /* Forum Section */
+        .forum-preview {
+            background: rgba(138, 92, 245, 0.05);
+            border: 1px solid rgba(138, 92, 245, 0.2);
+            border-radius: 20px;
+            padding: 3rem;
+            text-align: center;
+        }
+
+        .forum-icon {
+            font-size: 5rem;
+            margin-bottom: 2rem;
+        }
+
+        .forum-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #8A5CF5 0%, #4EA8FF 100%);
+            color: white;
+            padding: 1.2rem 3rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 10px 30px rgba(138, 92, 245, 0.3);
+            margin-top: 1rem;
+        }
+
+        .forum-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(138, 92, 245, 0.5);
+        }
+
+        /* Hedera Section */
+        .hedera-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .hedera-card {
+            background: rgba(78, 168, 255, 0.05);
+            border: 1px solid rgba(78, 168, 255, 0.2);
+            border-radius: 15px;
+            padding: 2rem;
+        }
+
+        .hedera-card h4 {
+            color: #4EA8FF;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .hedera-card p {
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.6;
+        }
+
+        .check-icon {
+            color: #4EA8FF;
+            margin-right: 0.5rem;
+        }
+
+        .flow-diagram {
+            background: rgba(138, 92, 245, 0.1);
+            border: 1px solid rgba(138, 92, 245, 0.3);
+            border-radius: 15px;
+            padding: 3rem;
+            text-align: center;
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-top: 3rem;
+        }
+
+        /* Tech Stack */
+        .tech-category {
+            margin-bottom: 4rem;
+        }
+
+        .tech-category h3 {
+            font-size: 1.8rem;
+            color: #8A5CF5;
+            margin-bottom: 1.5rem;
+        }
+
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .tech-item {
+            background: rgba(138, 92, 245, 0.1);
+            border: 1px solid rgba(138, 92, 245, 0.3);
+            border-radius: 10px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .tech-item:hover {
+            transform: translateY(-5px);
+            border-color: rgba(138, 92, 245, 0.6);
+            background: rgba(138, 92, 245, 0.15);
+        }
+
+        .tech-item span {
+            font-size: 2rem;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Contact Section */
+        .contact-form {
+            max-width: 600px;
+            margin: 0 auto;
+            background: rgba(78, 168, 255, 0.05);
+            border: 1px solid rgba(78, 168, 255, 0.2);
+            border-radius: 20px;
+            padding: 3rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #4EA8FF;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem;
+            background: rgba(10, 15, 31, 0.6);
+            border: 1px solid rgba(78, 168, 255, 0.3);
+            border-radius: 10px;
+            color: white;
+            font-family: 'Inter', sans-serif;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #4EA8FF;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 150px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 1.2rem;
+            background: linear-gradient(135deg, #4EA8FF 0%, #8A5CF5 100%);
+            border: none;
+            border-radius: 50px;
+            color: white;
+            font-weight: 600;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(78, 168, 255, 0.5);
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .social-links a {
+            font-size: 2rem;
+            color: #4EA8FF;
+            transition: transform 0.3s;
+        }
+
+        .social-links a:hover {
+            transform: scale(1.2);
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(10, 15, 31, 0.95);
+            padding: 3rem 5%;
+            text-align: center;
+            border-top: 1px solid rgba(78, 168, 255, 0.2);
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: #4EA8FF;
+        }
+
+        footer p {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.9rem;
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero p {
+                font-size: 1.1rem;
+            }
+
+            .simulator-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .feature-grid,
+            .overview-grid,
+            .hedera-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="stars-bg" id="stars"><div class="star" style="width: 0.602943px; height: 0.602943px; left: 57.211%; top: 69.1848%; animation-delay: 1.89793s;"></div><div class="star" style="width: 2.22604px; height: 2.22604px; left: 72.6828%; top: 70.832%; animation-delay: 0.579402s;"></div><div class="star" style="width: 2.2647px; height: 2.2647px; left: 2.90257%; top: 49.3484%; animation-delay: 0.903522s;"></div><div class="star" style="width: 1.72649px; height: 1.72649px; left: 25.7136%; top: 76.0013%; animation-delay: 2.64261s;"></div><div class="star" style="width: 1.38329px; height: 1.38329px; left: 44.8405%; top: 60.9101%; animation-delay: 2.20966s;"></div><div class="star" style="width: 1.15017px; height: 1.15017px; left: 68.1685%; top: 71.6355%; animation-delay: 1.78223s;"></div><div class="star" style="width: 0.618109px; height: 0.618109px; left: 89.3612%; top: 52.9727%; animation-delay: 2.01806s;"></div><div class="star" style="width: 2.08024px; height: 2.08024px; left: 45.864%; top: 77.1643%; animation-delay: 2.05054s;"></div><div class="star" style="width: 1.98307px; height: 1.98307px; left: 61.4326%; top: 83.3421%; animation-delay: 0.606316s;"></div><div class="star" style="width: 2.96745px; height: 2.96745px; left: 12.2148%; top: 72.551%; animation-delay: 2.55589s;"></div><div class="star" style="width: 0.333897px; height: 0.333897px; left: 30.0696%; top: 83.9344%; animation-delay: 1.25427s;"></div><div class="star" style="width: 0.257304px; height: 0.257304px; left: 84.7104%; top: 93.9766%; animation-delay: 1.67683s;"></div><div class="star" style="width: 1.38284px; height: 1.38284px; left: 53.4189%; top: 16.4448%; animation-delay: 2.20505s;"></div><div class="star" style="width: 2.95168px; height: 2.95168px; left: 11.3047%; top: 11.0801%; animation-delay: 1.0561s;"></div><div class="star" style="width: 1.04611px; height: 1.04611px; left: 30.7207%; top: 99.0075%; animation-delay: 2.66524s;"></div><div class="star" style="width: 0.304265px; height: 0.304265px; left: 82.248%; top: 72.1995%; animation-delay: 1.84431s;"></div><div class="star" style="width: 2.37038px; height: 2.37038px; left: 92.8%; top: 11.3892%; animation-delay: 0.384508s;"></div><div class="star" style="width: 2.09136px; height: 2.09136px; left: 66.7981%; top: 24.0744%; animation-delay: 0.89803s;"></div><div class="star" style="width: 2.88649px; height: 2.88649px; left: 20.5129%; top: 81.4971%; animation-delay: 0.661497s;"></div><div class="star" style="width: 1.64094px; height: 1.64094px; left: 89.405%; top: 69.4546%; animation-delay: 1.22113s;"></div><div class="star" style="width: 2.55388px; height: 2.55388px; left: 82.3136%; top: 44.8596%; animation-delay: 1.30189s;"></div><div class="star" style="width: 0.530434px; height: 0.530434px; left: 24.0585%; top: 99.191%; animation-delay: 0.993371s;"></div><div class="star" style="width: 0.40919px; height: 0.40919px; left: 6.13878%; top: 15.9404%; animation-delay: 1.7737s;"></div><div class="star" style="width: 2.5241px; height: 2.5241px; left: 74.4332%; top: 90.3749%; animation-delay: 2.32538s;"></div><div class="star" style="width: 1.09495px; height: 1.09495px; left: 39.9418%; top: 39.0809%; animation-delay: 1.94037s;"></div><div class="star" style="width: 1.22238px; height: 1.22238px; left: 52.562%; top: 18.6911%; animation-delay: 1.78854s;"></div><div class="star" style="width: 0.344337px; height: 0.344337px; left: 28.0234%; top: 22.8893%; animation-delay: 1.17459s;"></div><div class="star" style="width: 0.470691px; height: 0.470691px; left: 52.5767%; top: 2.0208%; animation-delay: 2.09036s;"></div><div class="star" style="width: 2.81992px; height: 2.81992px; left: 84.2226%; top: 57.9277%; animation-delay: 1.71929s;"></div><div class="star" style="width: 2.13633px; height: 2.13633px; left: 73.1686%; top: 40.0746%; animation-delay: 1.23766s;"></div><div class="star" style="width: 2.66208px; height: 2.66208px; left: 82.268%; top: 81.4999%; animation-delay: 0.809092s;"></div><div class="star" style="width: 0.454432px; height: 0.454432px; left: 95.5198%; top: 5.00108%; animation-delay: 2.77342s;"></div><div class="star" style="width: 1.32699px; height: 1.32699px; left: 91.0122%; top: 71.7947%; animation-delay: 2.07065s;"></div><div class="star" style="width: 1.19915px; height: 1.19915px; left: 97.3494%; top: 92.4575%; animation-delay: 1.32367s;"></div><div class="star" style="width: 0.035572px; height: 0.035572px; left: 70.1633%; top: 58.9926%; animation-delay: 1.66111s;"></div><div class="star" style="width: 1.14093px; height: 1.14093px; left: 6.84459%; top: 59.4121%; animation-delay: 1.57766s;"></div><div class="star" style="width: 1.74114px; height: 1.74114px; left: 32.0176%; top: 0.924108%; animation-delay: 0.828763s;"></div><div class="star" style="width: 2.41732px; height: 2.41732px; left: 18.9807%; top: 95.2117%; animation-delay: 0.283248s;"></div><div class="star" style="width: 2.80371px; height: 2.80371px; left: 93.1105%; top: 66.3737%; animation-delay: 0.561542s;"></div><div class="star" style="width: 0.123112px; height: 0.123112px; left: 40.1486%; top: 71.6403%; animation-delay: 1.41093s;"></div><div class="star" style="width: 0.711879px; height: 0.711879px; left: 9.69097%; top: 91.1223%; animation-delay: 2.33166s;"></div><div class="star" style="width: 1.20278px; height: 1.20278px; left: 8.59344%; top: 21.1138%; animation-delay: 1.85489s;"></div><div class="star" style="width: 0.889636px; height: 0.889636px; left: 90.7682%; top: 10.093%; animation-delay: 2.40347s;"></div><div class="star" style="width: 1.15774px; height: 1.15774px; left: 39.8893%; top: 59.113%; animation-delay: 1.13283s;"></div><div class="star" style="width: 0.0806221px; height: 0.0806221px; left: 79.3424%; top: 24.8298%; animation-delay: 0.863294s;"></div><div class="star" style="width: 1.3466px; height: 1.3466px; left: 74.4137%; top: 11.8046%; animation-delay: 1.74188s;"></div><div class="star" style="width: 0.0865511px; height: 0.0865511px; left: 78.159%; top: 59.8318%; animation-delay: 2.29928s;"></div><div class="star" style="width: 1.05489px; height: 1.05489px; left: 4.58666%; top: 26.7686%; animation-delay: 0.0896892s;"></div><div class="star" style="width: 1.85486px; height: 1.85486px; left: 58.5855%; top: 12.3898%; animation-delay: 1.00035s;"></div><div class="star" style="width: 1.80516px; height: 1.80516px; left: 2.68638%; top: 40.4252%; animation-delay: 0.654301s;"></div><div class="star" style="width: 1.51831px; height: 1.51831px; left: 66.2309%; top: 75.3972%; animation-delay: 2.23537s;"></div><div class="star" style="width: 2.82508px; height: 2.82508px; left: 90.3886%; top: 46.3763%; animation-delay: 1.47435s;"></div><div class="star" style="width: 1.91572px; height: 1.91572px; left: 4.34233%; top: 96.6586%; animation-delay: 2.32511s;"></div><div class="star" style="width: 1.04909px; height: 1.04909px; left: 92.2056%; top: 26.2247%; animation-delay: 1.65241s;"></div><div class="star" style="width: 1.13578px; height: 1.13578px; left: 32.1203%; top: 27.3745%; animation-delay: 2.22133s;"></div><div class="star" style="width: 2.07584px; height: 2.07584px; left: 6.73119%; top: 24.7615%; animation-delay: 2.79732s;"></div><div class="star" style="width: 1.97499px; height: 1.97499px; left: 73.8939%; top: 43.558%; animation-delay: 1.13659s;"></div><div class="star" style="width: 1.46966px; height: 1.46966px; left: 22.3279%; top: 34.7902%; animation-delay: 0.563737s;"></div><div class="star" style="width: 1.36051px; height: 1.36051px; left: 78.6523%; top: 37.7983%; animation-delay: 1.05079s;"></div><div class="star" style="width: 2.42023px; height: 2.42023px; left: 73.9683%; top: 39.4631%; animation-delay: 1.05841s;"></div><div class="star" style="width: 2.50801px; height: 2.50801px; left: 0.0280087%; top: 91.3246%; animation-delay: 2.39972s;"></div><div class="star" style="width: 2.93974px; height: 2.93974px; left: 33.724%; top: 22.9156%; animation-delay: 1.75861s;"></div><div class="star" style="width: 1.43837px; height: 1.43837px; left: 28.9442%; top: 71.5534%; animation-delay: 1.19634s;"></div><div class="star" style="width: 0.498917px; height: 0.498917px; left: 49.9202%; top: 62.2526%; animation-delay: 1.34108s;"></div><div class="star" style="width: 1.12845px; height: 1.12845px; left: 92.5057%; top: 23.0396%; animation-delay: 0.786216s;"></div><div class="star" style="width: 2.46636px; height: 2.46636px; left: 19.1422%; top: 77.789%; animation-delay: 1.69174s;"></div><div class="star" style="width: 0.141267px; height: 0.141267px; left: 46.5002%; top: 22.6864%; animation-delay: 1.2769s;"></div><div class="star" style="width: 1.399px; height: 1.399px; left: 58.3794%; top: 79.7957%; animation-delay: 0.0100899s;"></div><div class="star" style="width: 2.38746px; height: 2.38746px; left: 55.0657%; top: 10.8886%; animation-delay: 0.187852s;"></div><div class="star" style="width: 2.11173px; height: 2.11173px; left: 5.17779%; top: 9.12982%; animation-delay: 1.29408s;"></div><div class="star" style="width: 0.986033px; height: 0.986033px; left: 49.001%; top: 84.2895%; animation-delay: 1.9771s;"></div><div class="star" style="width: 0.604225px; height: 0.604225px; left: 21.3279%; top: 76.473%; animation-delay: 1.13873s;"></div><div class="star" style="width: 0.210033px; height: 0.210033px; left: 40.2301%; top: 78.0478%; animation-delay: 1.08674s;"></div><div class="star" style="width: 0.91303px; height: 0.91303px; left: 75.0047%; top: 53.1422%; animation-delay: 2.65255s;"></div><div class="star" style="width: 1.12556px; height: 1.12556px; left: 14.5615%; top: 71.135%; animation-delay: 1.62047s;"></div><div class="star" style="width: 2.5601px; height: 2.5601px; left: 37.8388%; top: 6.09685%; animation-delay: 1.16215s;"></div><div class="star" style="width: 0.83108px; height: 0.83108px; left: 27.0379%; top: 61.9611%; animation-delay: 0.943233s;"></div><div class="star" style="width: 0.399825px; height: 0.399825px; left: 73.7365%; top: 59.3237%; animation-delay: 1.23034s;"></div><div class="star" style="width: 2.04466px; height: 2.04466px; left: 31.242%; top: 55.5759%; animation-delay: 0.199004s;"></div><div class="star" style="width: 2.87886px; height: 2.87886px; left: 34.924%; top: 88.0042%; animation-delay: 1.50182s;"></div><div class="star" style="width: 2.93505px; height: 2.93505px; left: 82.5713%; top: 43.7824%; animation-delay: 0.530156s;"></div><div class="star" style="width: 2.37824px; height: 2.37824px; left: 10.6049%; top: 83.7988%; animation-delay: 0.131475s;"></div><div class="star" style="width: 0.257489px; height: 0.257489px; left: 52.1017%; top: 4.28792%; animation-delay: 0.644473s;"></div><div class="star" style="width: 2.8282px; height: 2.8282px; left: 69.8688%; top: 1.24851%; animation-delay: 0.202892s;"></div><div class="star" style="width: 2.5066px; height: 2.5066px; left: 55.0411%; top: 9.05848%; animation-delay: 2.21427s;"></div><div class="star" style="width: 0.366645px; height: 0.366645px; left: 7.41663%; top: 87.46%; animation-delay: 2.50982s;"></div><div class="star" style="width: 1.0971px; height: 1.0971px; left: 31.9676%; top: 77.7484%; animation-delay: 2.95618s;"></div><div class="star" style="width: 2.54033px; height: 2.54033px; left: 34.4171%; top: 94.8394%; animation-delay: 2.72454s;"></div><div class="star" style="width: 0.949896px; height: 0.949896px; left: 75.6975%; top: 37.0897%; animation-delay: 2.13917s;"></div><div class="star" style="width: 0.395668px; height: 0.395668px; left: 35.3644%; top: 33.2317%; animation-delay: 2.04046s;"></div><div class="star" style="width: 1.62517px; height: 1.62517px; left: 69.6267%; top: 98.0022%; animation-delay: 0.477777s;"></div><div class="star" style="width: 1.04304px; height: 1.04304px; left: 89.8974%; top: 3.71307%; animation-delay: 0.651273s;"></div><div class="star" style="width: 2.96299px; height: 2.96299px; left: 3.58466%; top: 64.704%; animation-delay: 2.76213s;"></div><div class="star" style="width: 0.741647px; height: 0.741647px; left: 31.1985%; top: 59.156%; animation-delay: 2.97073s;"></div><div class="star" style="width: 0.709545px; height: 0.709545px; left: 71.3762%; top: 47.0225%; animation-delay: 1.15107s;"></div><div class="star" style="width: 0.712254px; height: 0.712254px; left: 18.3071%; top: 74.0791%; animation-delay: 1.06391s;"></div><div class="star" style="width: 1.40827px; height: 1.40827px; left: 14.1358%; top: 98.4633%; animation-delay: 1.68096s;"></div><div class="star" style="width: 0.122886px; height: 0.122886px; left: 61.5834%; top: 8.42708%; animation-delay: 1.38701s;"></div><div class="star" style="width: 2.60727px; height: 2.60727px; left: 78.2135%; top: 73.5818%; animation-delay: 1.83059s;"></div><div class="star" style="width: 2.64875px; height: 2.64875px; left: 82.8883%; top: 53.6952%; animation-delay: 0.63834s;"></div><div class="star" style="width: 0.806489px; height: 0.806489px; left: 36.3474%; top: 73.6112%; animation-delay: 0.2467s;"></div><div class="star" style="width: 1.36312px; height: 1.36312px; left: 70.9083%; top: 3.6914%; animation-delay: 1.57424s;"></div><div class="star" style="width: 2.3023px; height: 2.3023px; left: 44.2356%; top: 22.3574%; animation-delay: 0.147959s;"></div><div class="star" style="width: 0.653784px; height: 0.653784px; left: 44.557%; top: 21.3633%; animation-delay: 0.304306s;"></div><div class="star" style="width: 1.13509px; height: 1.13509px; left: 84.2314%; top: 17.1637%; animation-delay: 0.519513s;"></div><div class="star" style="width: 2.99126px; height: 2.99126px; left: 93.7353%; top: 36.0122%; animation-delay: 0.231466s;"></div><div class="star" style="width: 0.915276px; height: 0.915276px; left: 23.4802%; top: 17.1411%; animation-delay: 0.179249s;"></div><div class="star" style="width: 1.5333px; height: 1.5333px; left: 92.9186%; top: 96.9759%; animation-delay: 0.73888s;"></div><div class="star" style="width: 2.56958px; height: 2.56958px; left: 96.7439%; top: 68.7002%; animation-delay: 0.118855s;"></div><div class="star" style="width: 0.731107px; height: 0.731107px; left: 58.5256%; top: 59.838%; animation-delay: 1.74411s;"></div><div class="star" style="width: 1.09725px; height: 1.09725px; left: 17.9894%; top: 77.9299%; animation-delay: 0.275617s;"></div><div class="star" style="width: 2.29277px; height: 2.29277px; left: 12.1661%; top: 56.6421%; animation-delay: 1.63618s;"></div><div class="star" style="width: 0.907037px; height: 0.907037px; left: 0.791172%; top: 65.0038%; animation-delay: 2.66173s;"></div><div class="star" style="width: 2.08589px; height: 2.08589px; left: 90.9417%; top: 16.3966%; animation-delay: 1.02892s;"></div><div class="star" style="width: 0.546518px; height: 0.546518px; left: 11.2007%; top: 32.4798%; animation-delay: 0.564465s;"></div><div class="star" style="width: 2.64489px; height: 2.64489px; left: 90.44%; top: 98.6087%; animation-delay: 2.98007s;"></div><div class="star" style="width: 1.52711px; height: 1.52711px; left: 32.8985%; top: 92.7727%; animation-delay: 0.84054s;"></div><div class="star" style="width: 1.64983px; height: 1.64983px; left: 6.67925%; top: 91.1622%; animation-delay: 1.17939s;"></div><div class="star" style="width: 1.86882px; height: 1.86882px; left: 30.7086%; top: 72.0222%; animation-delay: 1.68395s;"></div><div class="star" style="width: 2.06401px; height: 2.06401px; left: 10.3961%; top: 53.8931%; animation-delay: 0.0114497s;"></div><div class="star" style="width: 0.30371px; height: 0.30371px; left: 17.0677%; top: 18.7412%; animation-delay: 1.51377s;"></div><div class="star" style="width: 0.38694px; height: 0.38694px; left: 72.8944%; top: 70.3435%; animation-delay: 2.86121s;"></div><div class="star" style="width: 0.0813929px; height: 0.0813929px; left: 38.5271%; top: 91.4249%; animation-delay: 0.430837s;"></div><div class="star" style="width: 1.05377px; height: 1.05377px; left: 54.8886%; top: 81.1805%; animation-delay: 1.42877s;"></div><div class="star" style="width: 1.60227px; height: 1.60227px; left: 15.4884%; top: 47.7075%; animation-delay: 0.977093s;"></div><div class="star" style="width: 2.80434px; height: 2.80434px; left: 80.5116%; top: 22.6494%; animation-delay: 0.681219s;"></div><div class="star" style="width: 1.53897px; height: 1.53897px; left: 34.5855%; top: 78.9046%; animation-delay: 2.32735s;"></div><div class="star" style="width: 2.96588px; height: 2.96588px; left: 96.7325%; top: 8.11194%; animation-delay: 0.943046s;"></div><div class="star" style="width: 0.701322px; height: 0.701322px; left: 77.9591%; top: 68.7819%; animation-delay: 2.70303s;"></div><div class="star" style="width: 0.79505px; height: 0.79505px; left: 5.52611%; top: 86.3209%; animation-delay: 2.67876s;"></div><div class="star" style="width: 0.0958972px; height: 0.0958972px; left: 23.5997%; top: 74.1877%; animation-delay: 0.591217s;"></div><div class="star" style="width: 0.164262px; height: 0.164262px; left: 86.804%; top: 96.5977%; animation-delay: 0.68006s;"></div><div class="star" style="width: 2.57756px; height: 2.57756px; left: 19.2432%; top: 74.4412%; animation-delay: 2.47617s;"></div><div class="star" style="width: 0.833959px; height: 0.833959px; left: 53.6356%; top: 83.9993%; animation-delay: 0.980222s;"></div><div class="star" style="width: 1.19727px; height: 1.19727px; left: 17.1479%; top: 88.0606%; animation-delay: 1.88676s;"></div><div class="star" style="width: 2.9852px; height: 2.9852px; left: 72.2509%; top: 24.2615%; animation-delay: 2.67212s;"></div><div class="star" style="width: 2.4579px; height: 2.4579px; left: 57.5971%; top: 61.8195%; animation-delay: 1.39341s;"></div><div class="star" style="width: 2.91346px; height: 2.91346px; left: 61.096%; top: 5.11495%; animation-delay: 0.880498s;"></div><div class="star" style="width: 1.99917px; height: 1.99917px; left: 94.3068%; top: 74.4564%; animation-delay: 2.32818s;"></div><div class="star" style="width: 1.90149px; height: 1.90149px; left: 97.3465%; top: 58.1444%; animation-delay: 0.993653s;"></div><div class="star" style="width: 1.95987px; height: 1.95987px; left: 98.9908%; top: 31.0882%; animation-delay: 1.99112s;"></div><div class="star" style="width: 1.61536px; height: 1.61536px; left: 19.0239%; top: 73.1493%; animation-delay: 0.98965s;"></div><div class="star" style="width: 2.71412px; height: 2.71412px; left: 84.543%; top: 84.5969%; animation-delay: 1.57057s;"></div><div class="star" style="width: 2.03788px; height: 2.03788px; left: 7.07007%; top: 79.0327%; animation-delay: 0.112014s;"></div><div class="star" style="width: 0.0297537px; height: 0.0297537px; left: 45.9727%; top: 84.3694%; animation-delay: 0.946431s;"></div><div class="star" style="width: 1.33609px; height: 1.33609px; left: 77.1573%; top: 75.5772%; animation-delay: 0.0623603s;"></div><div class="star" style="width: 1.26772px; height: 1.26772px; left: 83.1713%; top: 40.9051%; animation-delay: 2.35108s;"></div><div class="star" style="width: 0.791074px; height: 0.791074px; left: 42.421%; top: 0.985601%; animation-delay: 2.94375s;"></div><div class="star" style="width: 0.439611px; height: 0.439611px; left: 63.8118%; top: 1.70438%; animation-delay: 2.2188s;"></div><div class="star" style="width: 0.0090718px; height: 0.0090718px; left: 11.1647%; top: 81.1508%; animation-delay: 2.02919s;"></div><div class="star" style="width: 0.281032px; height: 0.281032px; left: 3.58438%; top: 44.8521%; animation-delay: 1.78098s;"></div><div class="star" style="width: 0.399482px; height: 0.399482px; left: 6.58763%; top: 90.5871%; animation-delay: 0.758659s;"></div><div class="star" style="width: 1.37707px; height: 1.37707px; left: 62.3906%; top: 45.4794%; animation-delay: 2.67019s;"></div><div class="star" style="width: 1.21284px; height: 1.21284px; left: 64.7709%; top: 65.8283%; animation-delay: 2.06432s;"></div><div class="star" style="width: 0.893629px; height: 0.893629px; left: 39.0332%; top: 72.2717%; animation-delay: 2.68978s;"></div><div class="star" style="width: 1.4726px; height: 1.4726px; left: 70.8366%; top: 23.8712%; animation-delay: 0.528232s;"></div><div class="star" style="width: 0.298266px; height: 0.298266px; left: 98.3099%; top: 85.2823%; animation-delay: 2.86562s;"></div><div class="star" style="width: 2.13449px; height: 2.13449px; left: 77.1077%; top: 14.3256%; animation-delay: 1.91592s;"></div><div class="star" style="width: 0.933259px; height: 0.933259px; left: 22.0003%; top: 73.9449%; animation-delay: 2.4871s;"></div><div class="star" style="width: 2.17908px; height: 2.17908px; left: 81.6039%; top: 51.602%; animation-delay: 2.53264s;"></div><div class="star" style="width: 1.28005px; height: 1.28005px; left: 78.087%; top: 17.7801%; animation-delay: 2.25679s;"></div><div class="star" style="width: 1.72334px; height: 1.72334px; left: 1.6824%; top: 5.76161%; animation-delay: 2.50645s;"></div><div class="star" style="width: 0.548044px; height: 0.548044px; left: 26.6649%; top: 46.3519%; animation-delay: 1.95199s;"></div><div class="star" style="width: 0.442814px; height: 0.442814px; left: 53.1913%; top: 87.6001%; animation-delay: 2.16849s;"></div><div class="star" style="width: 2.70788px; height: 2.70788px; left: 80.0502%; top: 75.9116%; animation-delay: 1.7138s;"></div><div class="star" style="width: 2.00576px; height: 2.00576px; left: 80.715%; top: 10.9508%; animation-delay: 0.388356s;"></div><div class="star" style="width: 0.384175px; height: 0.384175px; left: 47.4242%; top: 54.8731%; animation-delay: 0.717279s;"></div><div class="star" style="width: 1.49631px; height: 1.49631px; left: 41.3015%; top: 0.619174%; animation-delay: 2.79205s;"></div><div class="star" style="width: 2.78528px; height: 2.78528px; left: 27.8897%; top: 3.9376%; animation-delay: 1.22962s;"></div><div class="star" style="width: 0.241426px; height: 0.241426px; left: 63.3619%; top: 47.4656%; animation-delay: 0.279296s;"></div><div class="star" style="width: 2.79702px; height: 2.79702px; left: 82.7283%; top: 49.6336%; animation-delay: 0.0712351s;"></div><div class="star" style="width: 1.02325px; height: 1.02325px; left: 36.8125%; top: 59.0943%; animation-delay: 1.20689s;"></div><div class="star" style="width: 2.99457px; height: 2.99457px; left: 84.5715%; top: 3.71102%; animation-delay: 1.80339s;"></div><div class="star" style="width: 1.21391px; height: 1.21391px; left: 95.4766%; top: 94.5012%; animation-delay: 0.615004s;"></div><div class="star" style="width: 0.358687px; height: 0.358687px; left: 94.1656%; top: 65.1239%; animation-delay: 0.640876s;"></div><div class="star" style="width: 0.848155px; height: 0.848155px; left: 14.8322%; top: 58.2296%; animation-delay: 0.242957s;"></div><div class="star" style="width: 0.102751px; height: 0.102751px; left: 58.4048%; top: 89.1019%; animation-delay: 2.59745s;"></div><div class="star" style="width: 1.46054px; height: 1.46054px; left: 16.6452%; top: 8.58888%; animation-delay: 0.982944s;"></div><div class="star" style="width: 2.5647px; height: 2.5647px; left: 99.4432%; top: 8.80997%; animation-delay: 2.7517s;"></div><div class="star" style="width: 0.439743px; height: 0.439743px; left: 40.6668%; top: 71.7975%; animation-delay: 0.0930375s;"></div><div class="star" style="width: 1.83955px; height: 1.83955px; left: 98.4003%; top: 18.0786%; animation-delay: 2.251s;"></div><div class="star" style="width: 1.3128px; height: 1.3128px; left: 83.3829%; top: 3.78916%; animation-delay: 2.05832s;"></div><div class="star" style="width: 0.977968px; height: 0.977968px; left: 11.4211%; top: 69.8564%; animation-delay: 0.57882s;"></div><div class="star" style="width: 1.08009px; height: 1.08009px; left: 21.665%; top: 60.2284%; animation-delay: 0.519932s;"></div><div class="star" style="width: 1.99817px; height: 1.99817px; left: 2.83399%; top: 75.149%; animation-delay: 0.149792s;"></div><div class="star" style="width: 0.785983px; height: 0.785983px; left: 48.2452%; top: 34.7424%; animation-delay: 1.98706s;"></div><div class="star" style="width: 0.296763px; height: 0.296763px; left: 93.4375%; top: 49.0018%; animation-delay: 1.21615s;"></div><div class="star" style="width: 1.31058px; height: 1.31058px; left: 66.2685%; top: 3.61011%; animation-delay: 1.84842s;"></div><div class="star" style="width: 0.897586px; height: 0.897586px; left: 98.0382%; top: 96.5224%; animation-delay: 1.24219s;"></div><div class="star" style="width: 1.84997px; height: 1.84997px; left: 22.4088%; top: 37.5107%; animation-delay: 1.49569s;"></div><div class="star" style="width: 1.26523px; height: 1.26523px; left: 29.0574%; top: 65.2197%; animation-delay: 0.190882s;"></div><div class="star" style="width: 0.301002px; height: 0.301002px; left: 81.177%; top: 32.7326%; animation-delay: 2.29939s;"></div><div class="star" style="width: 1.27221px; height: 1.27221px; left: 3.99306%; top: 44.779%; animation-delay: 1.55315s;"></div><div class="star" style="width: 2.53823px; height: 2.53823px; left: 31.1773%; top: 58.1107%; animation-delay: 0.0875773s;"></div><div class="star" style="width: 0.810005px; height: 0.810005px; left: 59.3764%; top: 67.5877%; animation-delay: 2.0684s;"></div><div class="star" style="width: 1.75264px; height: 1.75264px; left: 58.9229%; top: 97.4291%; animation-delay: 0.662133s;"></div><div class="star" style="width: 2.76086px; height: 2.76086px; left: 22.9552%; top: 68.9652%; animation-delay: 1.06341s;"></div><div class="star" style="width: 1.25506px; height: 1.25506px; left: 17.1554%; top: 62.5666%; animation-delay: 1.3266s;"></div><div class="star" style="width: 1.81519px; height: 1.81519px; left: 19.4155%; top: 36.2455%; animation-delay: 1.35947s;"></div><div class="star" style="width: 1.02087px; height: 1.02087px; left: 8.04806%; top: 9.96783%; animation-delay: 0.772198s;"></div></div>
+
+    <nav>
+        <div class="logo">AstroTerra</div>
+        <ul class="nav-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#project">Project</a></li>
+            <li><a href="#simulators">Simulators</a></li>
+            <li><a href="#forum">Forum</a></li>
+            <li><a href="#hedera">Hedera</a></li>
+            <li><a href="#tech">Tech Stack</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+        <button class="mobile-menu-btn">☰</button>
+    </nav>
+
+    <!-- HOME -->
+    <section class="hero" id="home" style="opacity: 1; transform: translateY(0px); transition: opacity 0.8s, transform 0.8s;">
+        <div class="hero-content">
+            <h1>AstroTerra</h1>
+            <p>Interactive asteroid impact visualization and planetary defense simulation platform. Transform complex orbital mechanics into accessible simulations using real NASA data.</p>
+            <a href="https://astroterrasimulating.netlify.app/" class="cta-button" target="_blank">🚀 Launch Simulation</a>
+        </div>
+    </section>
+
+    <!-- FEATURES -->
+    <section id="features" style="opacity: 0; transform: translateY(30px); transition: opacity 0.8s, transform 0.8s;">
+        <h2 class="section-title">Key Features</h2>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <div class="feature-icon">🛰️</div>
+                <h3>Real NASA Data</h3>
+                <p>Powered by authentic NASA ephemeris data and SpicePy for precise orbital calculations and trajectory modeling.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🎯</div>
+                <h3>Accurate Orbital Mechanics</h3>
+                <p>REBOUND-based N-body gravitational simulations ensure scientifically accurate asteroid trajectories and impacts.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">💥</div>
+                <h3>Visual Impact Analysis</h3>
+                <p>See crater size, thermal zones, shockwaves, and seismic activity visualized on a 3D Earth model using CesiumJS.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🛡️</div>
+                <h3>Mitigation Strategy Builder</h3>
+                <p>Design and test planetary defense strategies including kinetic impactors with ΔV budget calculations.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about" style="opacity: 0; transform: translateY(30px); transition: opacity 0.8s, transform 0.8s;">
+        <h2 class="section-title">About AstroTerra</h2>
+        <div class="mission-statement">
+            <strong>Our Mission:</strong> To make asteroid impact science accessible to everyone. AstroTerra bridges the gap between complex scientific data and public understanding, empowering students, educators, researchers, and policymakers with powerful visualization tools built on real NASA data.
+        </div>
+        <h3 style="text-align: center; color: #8A5CF5; margin-bottom: 2rem;">Why AstroTerra Matters</h3>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h3>The Problem</h3>
+                <p>Asteroid impacts are rare but catastrophic events. Existing tools are either too technical for public use or too simplified to be scientifically meaningful.</p>
+            </div>
+            <div class="feature-card">
+                <h3>Our Solution</h3>
+                <p>A public-friendly, scientifically accurate simulator that makes complex orbital mechanics and planetary defense strategies accessible to everyone.</p>
+            </div>
+            <div class="feature-card">
+                <h3>The Impact</h3>
+                <p>Educate the public, support research, inform policy decisions, and inspire the next generation of planetary defense scientists.</p>
+            </div>
+        </div>
+        <h3 style="text-align: center; color: #8A5CF5; margin: 4rem 0 2rem;">Meet The Team</h3>
+
+<!-- MAIN WRAPPER -->
+<div class="team-wrapper">
+
+    <!-- === TOP ROW (2 People) === -->
+    <div class="team-row">
+        
+        <!-- 1. Aidiel -->
+        <div class="team-card">
+            <div class="team-avatar">
+                <img src="./images/aidiel.jpg" alt="Aidiel">
+            </div>
+            <h4>Aidiel Izzudin</h4>
+            <p>Project Manager</p>
+        </div>
+
+        <!-- 2. Afeeq -->
+        <div class="team-card">
+            <div class="team-avatar">
+                <img src="./images/afeeq.jpg" alt="Afeeq">
+            </div>
+            <h4>Muhammad Afeeq</h4>
+            <p>Frontend Developer</p>
+        </div>
+
+    </div> 
+    <!-- End of Top Row -->
+
+
+    <!-- === BOTTOM ROW (3 People) === -->
+    <div class="team-row">
+
+        <!-- 3. Hasif -->
+        <div class="team-card">
+            <div class="team-avatar">
+                <img src="./images/hasif.jpg" alt="Hasif">
+            </div>
+            <h4>Hasif Zuhdi</h4>
+            <p>Hedera Specialist</p>
+        </div>
+
+        <!-- 4. Zaki -->
+        <div class="team-card">
+            <div class="team-avatar">
+                <img src="./images/zaki.jpg" alt="Zaki">
+            </div>
+            <h4>Zaki</h4>
+            <p>Product Manager</p>
+        </div>
+
+        <!-- 5. Ethan -->
+        <div class="team-card">
+            <div class="team-avatar">
+                <img src="./images/ethan.jpg" alt="Ethan">
+            </div>
+            <h4>Ethan Trakun</h4>
+            <p>Backend Developer</p>
+        </div>
+
+    </div>
+    <!-- End of Bottom Row -->
+
+</div>
+        </div>
+    </section>
+
+    <!-- PROJECT OVERVIEW -->
+    <section id="project" style="opacity: 0; transform: translateY(30px); transition: opacity 0.8s, transform 0.8s;">
+        <h2 class="section-title">Project Overview</h2>
+        <p class="section-subtitle">How we built a scientifically accurate asteroid impact simulator accessible to everyone</p>
+        <div class="overview-grid">
+            <div class="overview-card">
+                <h3>🎯 Why</h3>
+                <ul>
+                    <li>Asteroid impacts pose existential risks to humanity</li>
+                    <li>Public awareness and understanding is critically low</li>
+                    <li>Existing tools lack accessibility or scientific rigor</li>
+                    <li>Need for transparent planetary defense planning</li>
+                </ul>
+            </div>
+            <div class="overview-card">
+                <h3>💡 What</h3>
+                <ul>
+                    <li>Real-time 3D asteroid impact visualization</li>
+                    <li>Detailed consequence modeling: craters, thermal zones, shockwaves</li>
+                    <li>Interactive mitigation strategy simulator</li>
+                    <li>ΔV budget calculator for deflection missions</li>
+                    <li>Community discussion forum</li>
+                    <li>Blockchain-verified simulation records</li>
+                </ul>
+            </div>
+            <div class="overview-card">
+                <h3>⚙️ How</h3>
+                <ul>
+                    <li><strong>CesiumJS:</strong> 3D Earth visualization and impact rendering</li>
+                    <li><strong>REBOUND:</strong> N-body gravitational simulations</li>
+                    <li><strong>SpicePy:</strong> NASA ephemeris data integration</li>
+                    <li><strong>FastAPI/Flask:</strong> High-performance backend pipeline</li>
+                    <li><strong>Frustum Culling:</strong> Optimized rendering performance</li>
+                    <li><strong>Static Export:</strong> Smooth browser performance</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- SIMULATORS -->
+    <section class="simulators" id="simulators" style="opacity: 0; transform: translateY(30px); transition: opacity 0.8s, transform 0.8s;">
+        <h2 class="section-title">Explore Our Simulators</h2>
+        <p class="section-subtitle">Experience cutting-edge asteroid simulation technology powered by real NASA data</p>
+        <div class="simulator-grid">
+            <div class="simulator-card">
+                <div class="simulator-preview">🌍</div>
+                <h3>Impact Simulator</h3>
+                <p>Visualize asteroid impacts on Earth with real-time calculations of destruction radius, thermal effects, seismic activity, and geological consequences. Built with CesiumJS and NASA data.</p>
+                <a href="https://astroterrasimulating.netlify.app/" class="sim-button" target="_blank">Launch Simulator →</a>
+            </div>
+            <div class="simulator-card">
+                <div class="simulator-preview">🚀</div>
+                <h3>Mitigation Simulator</h3>
+                <p>Design spacecraft missions to deflect asteroids. Calculate ΔV requirements, trajectory changes, and mission success probabilities using REBOUND simulations.</p>
+                <a href="https://astroterramitigation.netlify.app/" class="sim-button" target="_blank">Open Mitigation Tool →</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- FORUM -->
+    <section id="forum" style="opacity: 0; transform: translateY(30px); transition: opacity 0.8s, transform 0.8s;">
+        <h2 class="section-title">AstroTerra Forum</h2>
+        <p class="section-subtitle">Join our community of space enthusiasts, researchers, and planetary defense advocates</p>
+        <div class="forum-preview">
+            <div class="forum-icon">💬</div>
+            <h3 style="color: #8A5CF5; margin-bottom: 1rem;">Community Discussion Hub</h3>
+            <p style="color: rgba(255, 255, 255, 0.7); max-width: 600px; margin: 0 auto 2rem; line-height: 1.6;">
+                Share simulation results, discuss mitigation strategies, debate planetary defense policies, and connect with fellow space enthusiasts. Our Reddit-style forum features threaded discussions, upvoting, and user profiles.
+            </p>
+            <a href="#forum" class="forum-button">Coming Soon</a>
+        </div>
+    </section>
+
+    <!-- HEDERA -->
+    <section id="hedera" style="opacity: 0; transform: translateY(30px); transition: opacity 0.8s, transform 0.8s;">
+        <h2 class="section-title">Hedera Integration</h2>
+        <p class="section-subtitle">Blockchain-verified transparency for planetary defense simulations</p>
+        <div class="hedera-grid">
+            <div class="hedera-card">
+                <h4><span class="check-icon">✓</span> Hedera Consensus Service</h4>
+                <p>Fully integrated HCS for immutable logging of simulation events and mitigation decisions.</p>
+            </div>
+            <div class="hedera-card">
+                <h4><span class="check-icon">✓</span> Mirror Network</h4>
+                <p>Configured access to Hedera Mirror Network for transparent verification and audit trails.</p>
+            </div>
+            <div class="hedera-card">
+                <h4><span class="check-icon">✓</span> Secure Timestamping</h4>
+                <p>Every simulation and mitigation action is securely timestamped on the blockchain for accountability.</p>
+            </div>
+        </div>
+        <div class="flow-diagram">
+            <strong>Verification Flow:</strong><br><br>
+            Simulation Output → Hash Generation → Hedera Consensus Service → Mirror Network → Verified Record
+        </div>
+        <div style="margin-top: 3rem; text-align: center; color: rgba(255, 255, 255, 0.7);">
+            <h4 style="color: #4EA8FF; margin-bottom: 1rem;">Why Blockchain?</h4>
+            <p style="max-width: 800px; margin: 0 auto; line-height: 1.6;">
+                Planetary defense decisions require transparency and accountability. By logging simulation events on Hedera's distributed ledger, we create an immutable record that can be audited by governments, researchers, and the public. Future features may include community voting on mitigation strategies.
+            </p>
+        </div>
+    </section>
+
+    <!-- TECH STACK -->
+    <section id="tech" style="opacity: 0; transform: translateY(30px); transition: opacity 0.8s, transform 0.8s;">
+        <h2 class="section-title">Tech Stack</h2>
+        <p class="section-subtitle">Built with cutting-edge technologies for performance and accuracy</p>
+        
+        <div class="tech-category">
+            <h3>Frontend</h3>
+            <div class="tech-grid">
+                <div class="tech-item">
+                    <span>🌐</span>
+                    <strong>HTML</strong>
+                </div>
+                <div class="tech-item">
+                    <span>🎨</span>
+                    <strong>CSS</strong>
+                </div>
+                <div class="tech-item">
+                    <span>⚡</span>
+                    <strong>JavaScript</strong>
+                </div>
+                <div class="tech-item">
+                    <span>⚙️</span>
+                    <strong>Vite</strong>
+                </div>
+                <div class="tech-item">
+                    <span>🌍</span>
+                    <strong>CesiumJS</strong>
+                </div>
+            </div>
+        </div>
+
+        <div class="tech-category">
+            <h3>Backend</h3>
+            <div class="tech-grid">
+                <div class="tech-item">
+                    <span>🐍</span>
+                    <strong>Python</strong>
+                </div>
+                <div class="tech-item">
+                    <span>🚀</span>
+                    <strong>FastAPI</strong>
+                </div>
+                <div class="tech-item">
+                    <span>🌶️</span>
+                    <strong>Flask</strong>
+                </div>
+                <div class="tech-item">
+                    <span>🛰️</span>
+                    <strong>NASA SpicePy</strong>
+                </div>
+                <div class="tech-item">
+                    <span>🪐</span>
+                    <strong>REBOUND</strong>
+                </div>
+            </div>
+        </div>
+
+        <div class="tech-category">
+            <h3>Development Tools</h3>
+            <div class="tech-grid">
+                <div class="tech-item">
+                    <span>📦</span>
+                    <strong>Git LFS</strong>
+                </div>
+                <div class="tech-item">
+                    <span>📗</span>
+                    <strong>Node.js</strong>
+                </div>
+                <div class="tech-item">
+                    <span>🐍</span>
+                    <strong>Anaconda Miniforge</strong>
+                </div>
+                <div class="tech-item">
+                    <span>✏️</span>
+                    <strong>Cursor</strong>
+                </div>
+                <div class="tech-item">
+                    <span>🤖</span>
+                    <strong>Gemini CLI</strong>
+                </div>
+            </div>
+        </div>
+
+        <div class="tech-category">
+            <h3>Deployment &amp; Hosting</h3>
+            <div class="tech-grid">
+                <div class="tech-item">
+                    <span>🚀</span>
+                    <strong>Netlify</strong>
+                </div>
+                <div class="tech-item">
+                    <span>🤗</span>
+                    <strong>Hugging Face Spaces</strong>
+                </div>
+                <div class="tech-item">
+                    <span>⛓️</span>
+                    <strong>Hedera Network</strong>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" style="opacity: 0; transform: translateY(30px); transition: opacity 0.8s, transform 0.8s;">
+        <h2 class="section-title">Get In Touch</h2>
+        <p class="section-subtitle">Have questions? Want to collaborate? We'd love to hear from you!</p>
+        
+        <div class="contact-form">
+            <form>
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" id="name" name="name" placeholder="Your name" required="">
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" placeholder="your.email@example.com" required="">
+                </div>
+                <div class="form-group">
+                    <label for="message">Message</label>
+                    <textarea id="message" name="message" placeholder="Tell us what you're thinking..." required=""></textarea>
+                </div>
+                <button type="submit" class="submit-btn">Send Message</button>
+            </form>
+        </div>
+
+        <div class="social-links">
+            <a href="#" title="GitHub">💻</a>
+            <a href="#" title="Twitter">🐦</a>
+            <a href="#" title="LinkedIn">💼</a>
+            <a href="#" title="Email">📧</a>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-links">
+            <a href="#home">Home</a>
+            <a href="#about">About Us</a>
+            <a href="#project">Project Overview</a>
+            <a href="#simulators">Simulators</a>
+            <a href="#forum">Forum</a>
+            <a href="#hedera">Hedera Integration</a>
+            <a href="#tech">Tech Stack</a>
+            <a href="#contact">Contact</a>
+        </div>
+        <p>© 2025 AstroTerra. Built for NASA Space Apps Challenge.</p>
+    </footer>
+
+    <script>
+        // Generate animated stars
+        const starsContainer = document.getElementById('stars');
+        for (let i = 0; i < 200; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            star.style.width = Math.random() * 3 + 'px';
+            star.style.height = star.style.width;
+            star.style.left = Math.random() * 100 + '%';
+            star.style.top = Math.random() * 100 + '%';
+            star.style.animationDelay = Math.random() * 3 + 's';
+            starsContainer.appendChild(star);
+        }
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // Form submission
+        document.querySelector('form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Thank you for your message! We\'ll get back to you soon.');
+            this.reset();
+        });
+
+        // Add fade-in animation on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe all sections
+        document.querySelectorAll('section').forEach(section => {
+            section.style.opacity = '0';
+            section.style.transform = 'translateY(30px)';
+            section.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+            observer.observe(section);
+        });
+    </script>
+
+</body></html>
